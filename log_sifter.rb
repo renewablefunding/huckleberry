@@ -2,6 +2,7 @@
 
 # requrie looks in the $LOAD_PATH
 require 'english'
+require_relative 'app_helper'
 
 class LogSifter
   # heredoc USAGE
@@ -28,7 +29,7 @@ class LogSifter
       f.each_line do |line|
         count += 1
         puts line
-        puts "/n"
+        puts "_________________________"
       end
     end
     puts count
@@ -44,9 +45,35 @@ class LogParser
     LogEntry.new(line)
   end
 
+  def convert_to_array
+    LogArray.new(line)
+  end
+
   private
 
   attr_reader :line
+
+end
+
+class LogArray
+  attr_reader :route
+
+  def initialize(line)
+    @line = line
+    @array = line.split(" ")
+    @route = nil
+  end
+
+  def parse_array
+    array.each do |element|
+      @route = element if element[0] == '/'
+    end
+  end
+
+
+  private
+
+  attr_reader :line, :array
 
 end
 
@@ -61,6 +88,14 @@ class LogEntry
 
   def server_log?
     !!(line =~ /(GET|POST|PATCH|DELETE|PUT) \//)
+  end
+
+  def route
+    if line.include?('/unauthenticated')
+      '/unauthenticated'
+    else
+      '/authentication/create'
+    end
   end
 
   private

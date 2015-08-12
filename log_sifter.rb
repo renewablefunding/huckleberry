@@ -4,8 +4,13 @@ require 'english'
 require_relative 'app_helper'
 
 class LogSifter
-  def self.show_usage
-    puts <<-USAGE
+  def initialize(logfile, stdout=$stdout)
+    @logfile = logfile + ".log"
+    @stdout = stdout
+  end
+
+  def show_usage
+    stdout.puts <<-USAGE
 
     Usage: ruby -r "./log_sifter.rb" -e "LogSifter.shell_script '<filename>'"
 
@@ -14,13 +19,11 @@ class LogSifter
     USAGE
   end
 
-  def self.shell_script(var)
+  def shell_script
     # currently not being used
     # if var.length != 1
     #   show_usage
     # end
-
-    logfile = var + ".log"
 
     non_server_logs_count = 0
     status_200_count = 0
@@ -36,15 +39,15 @@ class LogSifter
           status_302_count += 1 if log_entry.http_code == "302"
           status_404_count += 1 if log_entry.http_code == "404"
           status_500_count += 1 if log_entry.http_code == "500"
-          puts "Status: " + log_entry.http_code + " - Request: " + log_entry.log_type + " - To: " + log_entry.route + " - From: " + log_entry.client_ip + " - At: " + log_entry.date + " (" + log_entry.timezone + ") "
-          puts "________________________________________"
+          stdout.puts "Status: " + log_entry.http_code + " - Request: " + log_entry.log_type + " - To: " + log_entry.route + " - From: " + log_entry.client_ip + " - At: " + log_entry.date + " (" + log_entry.timezone + ") "
+          stdout.puts "________________________________________"
 
         else
           non_server_logs_count += 1
         end
       end
     end
-    puts <<-OUTPUT
+    stdout.puts <<-OUTPUT
     Non-Server Logs: #{non_server_logs_count.to_s}
 
     Server Logs:
@@ -73,9 +76,11 @@ class LogSifter
     end
 
     mail.deliver
-
-
   end
+
+  private
+  attr_reader :logfile, :stdout
+
 end
 
 class LogEntry

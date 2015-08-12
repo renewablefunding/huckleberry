@@ -50,7 +50,7 @@ class LogParser
 end
 
 class LogEntry
-  attr_reader :route, :is_server_log, :log_type, :date
+  attr_reader :route, :is_server_log, :log_type, :date, :http_code, :call_time, :timezone, :client_ip
 
   def initialize(line)
     @line = line
@@ -59,18 +59,26 @@ class LogEntry
     @is_server_log = nil
     @log_type = nil
     @date = nil
+    @http_code = nil
+    @call_time = nil
+    @timezone = nil
+    @client_ip = nil
   end
 
   def parse_array
     array.each do |element|
-      @route = element if element[0] == '/'
+      @date = element.gsub(/\[/, '') if element.include?('[')
       if server_log?
+        @route = element if element[0] == '/'
         @log_type = element.gsub(/[^a-zA-Z]/, '') if is_log_element?(element)
         @is_server_log = true
+        @timezone = element.gsub(/\]/, '') if element.include?(']')
+        @call_time = element if element.match(/\d\.\d{4}/)
+        @client_ip = element if (element.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/) && !element.match(/[^\.0-9]/)) && element.count('.') == 3
+        @http_code = element unless (element.match(/[\D]/) || element.length != 3)
       else
         @is_server_log = false
       end
-      @date = element.gsub(/\[/, '') if element.include?('[')
     end
   end
 

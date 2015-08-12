@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-# requrie looks in the $LOAD_PATH
 require 'english'
 require_relative 'app_helper'
 
@@ -16,16 +15,17 @@ class LogSifter
   end
 
   def self.shell_script(var)
-    if var.length != 1
-      show_usage
-    end
+    # currently not being used
+    # if var.length != 1
+    #   show_usage
+    # end
 
     logfile = var + ".log"
 
     non_server_logs_count = 0
     File.open(logfile) do |f|
       f.each_line do |line|
-        log_entry = LogParser.new(line).convert_to_array
+        log_entry = LogEntry.new(line)
         log_entry.parse_array
         if log_entry.is_server_log
           puts "Status: " + log_entry.http_code + " - Request: " + log_entry.log_type + " - To: " + log_entry.route + " - From: " + log_entry.client_ip + " - At: " + log_entry.date + " (" + log_entry.timezone + ") "
@@ -37,21 +37,6 @@ class LogSifter
     end
     puts "Non Server Logs: " + non_server_logs_count.to_s
   end
-end
-
-class LogParser
-  def initialize(line)
-    @line = line
-  end
-
-  def convert_to_array
-    LogEntry.new(line)
-  end
-
-  private
-
-  attr_reader :line
-
 end
 
 class LogEntry
@@ -95,6 +80,5 @@ class LogEntry
   def server_log?
     !!(line =~ /(GET|POST|PATCH|DELETE|PUT) \//)
   end
-
   attr_reader :line, :array
 end

@@ -22,15 +22,20 @@ class LogSifter
 
     logfile = var + ".log"
 
-    count = 0
+    non_server_logs_count = 0
     File.open(logfile) do |f|
       f.each_line do |line|
-        count += 1
-        puts line
-        puts "_________________________"
+        log_entry = LogParser.new(line).convert_to_array
+        log_entry.parse_array
+        if log_entry.is_server_log
+          puts "Status: " + log_entry.http_code + " - Request: " + log_entry.log_type + " - To: " + log_entry.route + " - From: " + log_entry.client_ip + " - At: " + log_entry.date + " (" + log_entry.timezone + ") "
+          puts "________________________________________"
+        else
+          non_server_logs_count += 1
+        end
       end
     end
-    puts count
+    puts "Non Server Logs: " + non_server_logs_count.to_s
   end
 end
 

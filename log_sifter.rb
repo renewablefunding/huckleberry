@@ -23,36 +23,67 @@ class LogSifter
     logfile = var + ".log"
 
     non_server_logs_count = 0
+    status_200_count = 0
+    status_302_count = 0
+    status_404_count = 0
+    status_500_count = 0
     File.open(logfile) do |f|
       f.each_line do |line|
         log_entry = LogEntry.new(line)
         log_entry.parse_array
-        if log_entry.is_server_log
+        if log_entry.server_log?
+          status_200_count += 1 if log_entry.http_code == "200"
+          status_302_count += 1 if log_entry.http_code == "302"
+          status_404_count += 1 if log_entry.http_code == "404"
+          status_500_count += 1 if log_entry.http_code == "500"
           puts "Status: " + log_entry.http_code + " - Request: " + log_entry.log_type + " - To: " + log_entry.route + " - From: " + log_entry.client_ip + " - At: " + log_entry.date + " (" + log_entry.timezone + ") "
           puts "________________________________________"
+
         else
           non_server_logs_count += 1
         end
       end
     end
-    puts "Non Server Logs: " + non_server_logs_count.to_s
+    puts <<-OUTPUT
+    Non-Server Logs: #{non_server_logs_count.to_s}
+
+    Server Logs:
+      Status 200: #{status_200_count.to_s}
+      Status 302: #{status_302_count.to_s}
+      Status 404: #{status_404_count.to_s}
+      Status 500: #{status_500_count.to_s}
+    OUTPUT
+
+    message = <<-MESSAGE
+
+    Non-Server Logs: #{non_server_logs_count.to_s}
+
+    Server Logs:
+      Status 200: #{status_200_count.to_s}
+      Status 302: #{status_302_count.to_s}
+      Status 404: #{status_404_count.to_s}
+      Status 500: #{status_500_count.to_s}
+    MESSAGE
+
+    mail = Mail.new do
+      from    'mcfadden.113@gmail.com'
+      to      'amcfadden@renewfund.com'
+      subject 'This is a test email'
+      body    message
+    end
+
+    mail.deliver
+
+
   end
 end
 
 class LogEntry
-  attr_reader :route, :is_server_log, :log_type, :date, :http_code, :call_time, :timezone, :client_ip
+  attr_reader :route,  :log_type, :date, :http_code, :call_time, :timezone, :client_ip
 
   def initialize(line)
     @line = line
     @array = line.split(" ")
-    @route = nil
-    @is_server_log = nil
-    @log_type = nil
-    @date = nil
-    @http_code = nil
-    @call_time = nil
-    @timezone = nil
-    @client_ip = nil
   end
 
   def parse_array
@@ -60,25 +91,32 @@ class LogEntry
       @date = element.gsub(/\[/, '') if element.include?('[')
       if server_log?
         @route = element if element[0] == '/'
-        @log_type = element.gsub(/[^a-zA-Z]/, '') if is_log_element?(element)
-        @is_server_log = true
         @timezone = element.gsub(/\]/, '') if element.include?(']')
         @call_time = element if element.match(/\d\.\d{4}/)
         @client_ip = element if (element.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/) && !element.match(/[^\.0-9]/)) && element.count('.') == 3
         @http_code = element unless (element.match(/[\D]/) || element.length != 3)
-      else
-        @is_server_log = false
       end
     end
   end
 
-  private
-  def is_log_element?(string)
-    !!(string =~ /(GET|POST|PATCH|DELETE|PUT)/)
+  def http_verb
+    # @http_verb ||= array[5].gsub(/[^A-Z]/, '')
+    @http_verb ||= raw_http_verb.tr('^A-Z', '')
+  end
+
+  def log_type
+    server_log? ? "HTTP" : "DATABASE"
   end
 
   def server_log?
-    !!(line =~ /(GET|POST|PATCH|DELETE|PUT) \//)
+    %w[GET POST PATCH DELETE PUT].any? {|http_verb| raw_http_verb.include? http_verb}
   end
+  private
+
   attr_reader :line, :array
+
+  def raw_http_verb
+    array[5].to_s
+  end
+
 end

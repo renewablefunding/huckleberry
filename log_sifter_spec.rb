@@ -4,6 +4,7 @@ require_relative 'log_sifter'
 require_relative 'spec_helper'
 
 RSpec.describe LogSifter do
+
   it 'will return the log entry object' do
     line = %q(I, [2015-08-10T11:50:43.088546 #13699]  INFO -- : (0.000192s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = "6af5e056a9ed607dd0b") LIMIT 1)
     log_entry = LogEntry.new(line)
@@ -53,14 +54,14 @@ RSpec.describe LogSifter do
       line = %q(I, [2017-07-10T11:51:43.088546 #13699]  INFO -- : (0.000192s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = "6af5e056a9ed607dd0b") LIMIT 1)
       log_entry = LogEntry.new(line)
       log_entry.parse_array
-      expect(log_entry.is_server_log).to be(false)
+      expect(log_entry.server_log?).to be(false)
     end
 
     it "is NOT a server log" do
       line = %q(I, [2017-07-10T11:51:43.088546 #13699]  INFO -- : (0.000192s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = "GETasdlkjo3as") LIMIT 1)
       log_entry = LogEntry.new(line)
       log_entry.parse_array
-      expect(log_entry.is_server_log).to be(false)
+      expect(log_entry.server_log?).to be(false)
     end
 
     %w(PATCH POST GET DELETE PUT).each do |http_verb|
@@ -68,7 +69,7 @@ RSpec.describe LogSifter do
         line = %Q(127.0.0.1 - - [10/Aug/2015:11:50:43 -0700] "#{http_verb} /authentication/create " 302 - 0.0684)
         log_entry = LogEntry.new(line)
         log_entry.parse_array
-        expect(log_entry.is_server_log).to be(true)
+        expect(log_entry.server_log?).to be(true)
       end
     end
   end
@@ -79,7 +80,7 @@ RSpec.describe LogSifter do
         line = %Q(127.0.0.1 - - [10/Aug/2015:14:20:43 -0700] "#{http_verb} / " 302 - 0.0176)
         log_entry = LogEntry.new(line)
         log_entry.parse_array
-        expect(log_entry.log_type).to eq("#{http_verb}")
+        expect(log_entry.http_verb).to eq(http_verb)
       end
     end
   end
@@ -159,6 +160,16 @@ RSpec.describe LogSifter do
         log_entry.parse_array
         expect(log_entry.client_ip).to eq(nil)
       end
+    end
+  end
+
+  #EMAIL testing
+
+  describe "sending an email" do
+    it "receive an email" do
+      LogSifter.shell_script('test')
+      expect(Mail::TestMailer.deliveries.length > 0).to be(true)
+      expect(Mail::TestMailer.deliveries.first.to.first).to eq("amcfadden@renewfund.com")
     end
   end
 end

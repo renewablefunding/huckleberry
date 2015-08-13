@@ -1,9 +1,9 @@
 # to run file enter
-# ruby -r "./log_sifter.rb" -e "LogSifter.new('<logfile_name>')"
+# ruby -r "./log_sifter.rb" -e "LogSifter.new('<logfile_relative_path>')"
 # in the terminal
 
 require 'english'
-require_relative 'app_helper'
+require_relative '../helpers/app_helper'
 
 class LogSifter
   def initialize(logfile, stdout = $stdout)

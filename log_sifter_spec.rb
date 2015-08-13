@@ -86,23 +86,13 @@ RSpec.describe LogSifter do
   end
 
   describe "Log route parse testing" do
-    it 'will return the log route of a log entry' do
-      line = '127.0.0.1 - - [10/Aug/2015:14:20:43 -0700] "GET /unauthenticated " 200 - 0.0063'
-      log_entry = LogEntry.new(line)
-      log_entry.parse_array
-      expect(log_entry.route).to eq('/unauthenticated')
-    end
-    it 'will return the log route of a log entry' do
-      line = '127.0.0.1 - - [10/Aug/2015:11:50:43 -0700] "POST /authentication/create " 302 - 0.0684'
-      log_entry = LogEntry.new(line)
-      log_entry.parse_array
-      expect(log_entry.route).to eq('/authentication/create')
-    end
-    it 'will return the log route of a log entry' do
-      line = '127.0.0.1 - - [10/Aug/2015:11:50:42 -0700] "GET /users " 200 - 0.0102'
-      log_entry = LogEntry.new(line)
-      log_entry.parse_array
-      expect(log_entry.route).to eq('/users')
+    %w(/unauthenticated /authentication/create /users).each do |route|
+      it "will return the log route #{route}" do
+        line = %Q(127.0.0.1 - - [10/Aug/2015:14:20:43 -0700] "GET #{route} " 200 - 0.0063)
+        log_entry = LogEntry.new(line)
+        log_entry.parse_array
+        expect(log_entry.route).to eq(route)
+      end
     end
   end
 
@@ -112,7 +102,7 @@ RSpec.describe LogSifter do
         line = %Q(127.0.0.1 - - [10/Aug/2015:11:50:42 -0700] "GET /users " #{http_code} - 0.0102)
         log_entry = LogEntry.new(line)
         log_entry.parse_array
-        expect(log_entry.http_code).to eq("#{http_code}")
+        expect(log_entry.http_code).to eq(http_code)
       end
     end
     %w(20 40L g404 5000 302f).each do |http_code|
@@ -131,7 +121,7 @@ RSpec.describe LogSifter do
         line = %Q(127.0.0.1 - - [10/Aug/2015:11:50:42 -0700] "GET /users " 200 - #{call_time})
         log_entry = LogEntry.new(line)
         log_entry.parse_array
-        expect(log_entry.call_time).to eq("#{call_time}")
+        expect(log_entry.call_time).to eq(call_time)
       end
     end
     %w(102s 12133 0 123.0).each do |call_time|
@@ -150,7 +140,7 @@ RSpec.describe LogSifter do
         line = %Q(#{client_ip} - - [10/Aug/2015:11:50:42 -0700] "GET /users " 200 - 0.0102)
         log_entry = LogEntry.new(line)
         log_entry.parse_array
-        expect(log_entry.client_ip).to eq("#{client_ip}")
+        expect(log_entry.client_ip).to eq(client_ip)
       end
     end
     %w(127.0.0.1.2 1160.10.240 24.234 1.1.1.1a 3225513).each do |client_ip|
@@ -162,6 +152,29 @@ RSpec.describe LogSifter do
       end
     end
   end
+
+  #DATABASE logs
+
+  describe 'Return the correct time taken for the DB call' do
+    %w(0.000192 102.0319203 0.000001 0.302011 023.123123).each do |db_call_time|
+      it "will return the DB call time of #{db_call_time}" do
+        line = %Q(I, [2017-07-10T11:51:43.088546 #13699]  INFO -- : (#{db_call_time}s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = "GETasdlkjo3as") LIMIT 1)
+        log_entry = LogEntry.new(line)
+        log_entry.parse_array
+        expect(log_entry.db_call_time).to eq(db_call_time)
+      end
+    end
+  end
+
+  describe '#db_call_time_as_float' do
+    it 'will return the db_call_time as a float' do
+      line = %Q(I, [2017-07-10T11:51:43.088546 #13699]  INFO -- : (0.000192s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = "GETasdlkjo3as") LIMIT 1)
+      log_entry = LogEntry.new(line)
+      log_entry.parse_array
+      expect(log_entry.db_call_time_as_float).to eq(0.000192)
+    end
+  end
+
 
   #EMAIL testing
 

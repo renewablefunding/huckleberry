@@ -13,6 +13,10 @@ class LogSifter
   end
 
   def shell_script
+    #set slow_do_call_metric in seconds
+    slow_do_call_metric = 0.010000
+    very_slow_do_call_metric = 0.100000
+
     non_server_logs_count = 0
 
     status_200_count = 0
@@ -28,6 +32,9 @@ class LogSifter
     patch_request_count = 0
     delete_request_count = 0
     put_request_count = 0
+
+    very_slow_db_call_count = 0
+    slow_db_call_count = 0
 
     File.open(logfile) do |f|
       f.each_line do |line|
@@ -60,19 +67,28 @@ class LogSifter
             non_tracked_request_verb += 1
           end
 
-request = <<-REQUEST
-  Status: #{log_entry.http_code}
-    #{log_entry.http_verb} Request to #{log_entry.route}
-    From: #{log_entry.client_ip}
-    At: #{log_entry.date} #{log_entry.timezone}
-- - - - - - - - - - - - - - - - - - - - - - - - -
-          REQUEST
-          stdout.puts request
+# if commented in this will print all HTTP requests to stdout
+# request = <<-REQUEST
+#   Status: #{log_entry.http_code}
+#     #{log_entry.http_verb} Request to #{log_entry.route}
+#     From: #{log_entry.client_ip}
+#     At: #{log_entry.date} #{log_entry.timezone}
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+#           REQUEST
+#           stdout.puts request
         else
+          if log_entry.db_call_time_as_float > slow_do_call_metric
+            slow_db_call_count += 1
+          elsif log_entry.db_call_time_as_float > very_slow_do_call_metric
+            very_slow_db_call_count += 1
+          end
           non_server_logs_count += 1
         end
       end
     end
+
+# Output to stdout
+
     stdout.puts <<-OUTPUT
 
     Database Logs: #{non_server_logs_count.to_s}
@@ -83,7 +99,7 @@ request = <<-REQUEST
       Status 404: #{status_404_count.to_s}
       Status 500: #{status_500_count.to_s}
 
-      Non-tracked Status: #{non_tracked_status.to_s}
+      Number of non-tracked Status: #{non_tracked_status.to_s}
 
     HTTP Request Verb Logs:
       GET: #{get_request_count.to_s}
@@ -92,8 +108,15 @@ request = <<-REQUEST
       PUT: #{delete_request_count.to_s}
       DELETE: #{put_request_count.to_s}
 
-      Non-tracked verb:
+      Number of non-tracked verbs: #{non_tracked_request_verb.to_s}
+
+    DB Calls:
+      Number of DB calls taking longer than #{slow_do_call_metric.to_s} seconds: #{slow_db_call_count.to_s}
+      Number of DB calls taking longer than #{very_slow_do_call_metric.to_s} seconds: #{very_slow_db_call_count.to_s}
+
     OUTPUT
+
+# Email message
 
     message = <<-MESSAGE
 
@@ -153,9 +176,21 @@ class LogEntry
   def server_log?
     %w[GET POST PATCH DELETE PUT].any? {|http_verb| raw_http_verb.include? http_verb}
   end
+
+  def db_call_time
+    if !server_log? && array.length > 6
+      @db_call_time ||= array[6].tr('^0-9\.','')
+    end
+  end
+
+  def db_call_time_as_float
+    db_call_time.to_f
+  end
   private
 
   attr_reader :line, :array
+
+  # (array[6].tr('^0-9\.','').to_f*1000000).to_i  #microseconds
 
   def raw_http_verb
     array[5].to_s

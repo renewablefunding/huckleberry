@@ -107,7 +107,7 @@ request = <<-REQUEST
     MESSAGE
 
     mail = Mail.new do
-      from    'mcfadden.113@gmail.com'
+      from    'testemail@test.com'
       to      'amcfadden@renewfund.com'
       subject 'This is a test email'
       body    message

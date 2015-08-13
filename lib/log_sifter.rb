@@ -90,6 +90,19 @@ class LogSifter
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # REQUEST
 # stdout.puts request
+<<<<<<< HEAD
+=======
+        else
+          if log_entry.db_call_time_as_float > slow_db_call_metric
+            slow_db_call_count += 1
+          elsif log_entry.db_call_time_as_float > very_slow_db_call_metric
+            very_slow_db_call_count += 1
+          end
+          non_server_logs_count += 1
+        end
+      end
+    end
+>>>>>>> 2debda3355a29344b60cf21f12779a21e8df6bdf
 
 # Output to stdout
 

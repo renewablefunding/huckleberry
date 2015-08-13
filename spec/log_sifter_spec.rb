@@ -1,7 +1,6 @@
-# require_relative looks at the files next to it
 
-require_relative 'log_sifter'
-require_relative 'spec_helper'
+require_relative '../log_sifter'
+require_relative '../helpers/spec_helper'
 
 RSpec.describe LogSifter do
 
@@ -192,7 +191,7 @@ RSpec.describe LogSifter do
 
   describe "sending an email" do
     let(:stdout) {FakeStdout.new}
-    subject { LogSifter.new('test', stdout) }
+    subject { LogSifter.new('spec/fixtures/test', stdout) }
     it "receive an email" do
       subject.shell_script
       expect(Mail::TestMailer.deliveries.length > 0).to be(true)

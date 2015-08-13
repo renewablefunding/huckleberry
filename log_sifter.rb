@@ -1,60 +1,98 @@
-#!/usr/bin/env ruby
+# to run file enter
+# ruby -r "./log_sifter.rb" -e "LogSifter.new('<logfile_name>')"
+# in the terminal
 
 require 'english'
 require_relative 'app_helper'
 
 class LogSifter
-  def initialize(logfile, stdout=$stdout)
+  def initialize(logfile, stdout = $stdout)
     @logfile = logfile + ".log"
     @stdout = stdout
-  end
-
-  def show_usage
-    stdout.puts <<-USAGE
-
-    Usage: ruby -r "./log_sifter.rb" -e "LogSifter.shell_script '<filename>'"
-
-    please provide a logfile name as an argument.
-
-    USAGE
+    shell_script
   end
 
   def shell_script
-    # currently not being used
-    # if var.length != 1
-    #   show_usage
-    # end
-
     non_server_logs_count = 0
+
     status_200_count = 0
     status_302_count = 0
     status_404_count = 0
     status_500_count = 0
+
+    non_tracked_status = 0
+    non_tracked_request_verb = 0
+
+    get_request_count = 0
+    post_request_count = 0
+    patch_request_count = 0
+    delete_request_count = 0
+    put_request_count = 0
+
     File.open(logfile) do |f|
       f.each_line do |line|
         log_entry = LogEntry.new(line)
         log_entry.parse_array
         if log_entry.server_log?
-          status_200_count += 1 if log_entry.http_code == "200"
-          status_302_count += 1 if log_entry.http_code == "302"
-          status_404_count += 1 if log_entry.http_code == "404"
-          status_500_count += 1 if log_entry.http_code == "500"
-          stdout.puts "Status: " + log_entry.http_code + " - Request: " + log_entry.log_type + " - To: " + log_entry.route + " - From: " + log_entry.client_ip + " - At: " + log_entry.date + " (" + log_entry.timezone + ") "
-          stdout.puts "________________________________________"
+          if log_entry.http_code == "200"
+            status_200_count += 1
+          elsif log_entry.http_code == "302"
+            status_302_count += 1
+          elsif log_entry.http_code == "404"
+            status_404_count += 1
+          elsif log_entry.http_code == "500"
+            status_500_count += 1
+          else
+            non_tracked_status += 1
+          end
 
+          if log_entry.http_verb == 'GET'
+            get_request_count += 1
+          elsif log_entry.http_verb == 'POST'
+            post_request_count += 1
+          elsif log_entry.http_verb == 'PATCH'
+            patch_request_count += 1
+          elsif log_entry.http_verb == 'DELETE'
+            delete_request_count += 1
+          elsif log_entry.http_verb == 'PUT'
+            put_request_count += 1
+          else
+            non_tracked_request_verb += 1
+          end
+
+request = <<-REQUEST
+  Status: #{log_entry.http_code}
+    #{log_entry.http_verb} Request to #{log_entry.route}
+    From: #{log_entry.client_ip}
+    At: #{log_entry.date} #{log_entry.timezone}
+- - - - - - - - - - - - - - - - - - - - - - - - -
+          REQUEST
+          stdout.puts request
         else
           non_server_logs_count += 1
         end
       end
     end
     stdout.puts <<-OUTPUT
-    Non-Server Logs: #{non_server_logs_count.to_s}
 
-    Server Logs:
+    Database Logs: #{non_server_logs_count.to_s}
+
+    HTTP Request Status Logs:
       Status 200: #{status_200_count.to_s}
       Status 302: #{status_302_count.to_s}
       Status 404: #{status_404_count.to_s}
       Status 500: #{status_500_count.to_s}
+
+      Non-tracked Status: #{non_tracked_status.to_s}
+
+    HTTP Request Verb Logs:
+      GET: #{get_request_count.to_s}
+      POST: #{post_request_count.to_s}
+      PATCH: #{patch_request_count.to_s}
+      PUT: #{delete_request_count.to_s}
+      DELETE: #{put_request_count.to_s}
+
+      Non-tracked verb:
     OUTPUT
 
     message = <<-MESSAGE
@@ -84,7 +122,7 @@ class LogSifter
 end
 
 class LogEntry
-  attr_reader :route,  :log_type, :date, :http_code, :call_time, :timezone, :client_ip
+  attr_reader :route, :log_type, :date, :http_code, :call_time, :timezone, :client_ip
 
   def initialize(line)
     @line = line
@@ -105,7 +143,6 @@ class LogEntry
   end
 
   def http_verb
-    # @http_verb ||= array[5].gsub(/[^A-Z]/, '')
     @http_verb ||= raw_http_verb.tr('^A-Z', '')
   end
 
@@ -123,5 +160,4 @@ class LogEntry
   def raw_http_verb
     array[5].to_s
   end
-
 end

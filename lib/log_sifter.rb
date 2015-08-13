@@ -11,7 +11,7 @@ require_relative '../helpers/app_helper'
 
 class LogSifter
   def initialize(logfile, stdout = $stdout)
-    @logfile = logfile + ".log"
+    @logfile = logfile
     @stdout = stdout
     shell_script
   end
@@ -83,6 +83,9 @@ class LogSifter
       end
     end
 
+    duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
+    duplicate_log_count = duplicate_logs.length
+
 # if commented in this will print all HTTP requests to stdout (can be set in app_helper)
 
 # request = <<-REQUEST
@@ -123,9 +126,22 @@ class LogSifter
       Number of DB calls taking longer than #{slow_db_call_metric.to_s} seconds: #{slow_db_call_count.to_s}
       Number of DB calls taking longer than #{very_slow_db_call_metric.to_s} seconds: #{very_slow_db_call_count.to_s}
 
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #{duplicate_log_count} duplicate logs found.
+
     OUTPUT
 
     stdout.puts message
+
+    if duplicate_log_count > 0
+      duplicate_logs.each do |log|
+        dupe_logs_message=<<-DUPE
+>     #{log}
+
+        DUPE
+        stdout.puts dupe_logs_message
+      end
+    end
 
 # Email message
 
@@ -141,5 +157,4 @@ class LogSifter
 
   private
   attr_reader :logfile, :stdout
-
 end

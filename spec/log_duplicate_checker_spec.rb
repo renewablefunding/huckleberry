@@ -8,7 +8,7 @@ RSpec.describe LogDuplicateChecker do
     %q(I, [2015-08-10T09:23:43.347131 #72657]  INFO -- : Started GET "/unauthenticated" for 127.0.0.1 at 2015-08-10 09:23:43 -0700)
   ]
 
-  let(:logfile_path) {'spec/fixtures/test'}
+  let(:logfile_path) {'spec/fixtures/test.log'}
   subject { LogDuplicateChecker.new(logfile_path) }
   it 'will create a LogDuplicateChecker object' do
     expect(subject).to be_a_kind_of LogDuplicateChecker

@@ -9,19 +9,16 @@ class LogDuplicateChecker
   end
 
   def duplicate_check
-    logfile_array = []
-    File.open(@logfile) do |f|
-      f.each_line.with_object([]) do |line, logfile_array|
-        logfile_array << line.chomp!
-      end
-    end
-    i = 0
     duplicate_line_array = []
-    while i < logfile_array.length
-      if logfile_array[i] == logfile_array[i + 1]
-        duplicate_line_array << logfile_array[i]
+    previous_log_entry = nil
+    File.open(logfile) do |f|
+      f.each_line do |line|
+        next if line.chomp! == ""
+        if previous_log_entry == line
+          duplicate_line_array << line
+        end
+        previous_log_entry = line
       end
-      i += 1
     end
     duplicate_line_array
   end

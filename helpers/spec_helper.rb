@@ -1,5 +1,9 @@
-require 'pry'
 require 'rspec'
 require 'mail'
+require 'pry'
 
-Mail.defaults {delivery_method :test}
+RSpec.configure do |c|
+  c.before :all do
+    Mail.defaults {delivery_method :test}
+  end
+end

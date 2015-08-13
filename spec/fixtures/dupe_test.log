@@ -1,0 +1,203 @@
+I, [2015-08-10T09:23:42.525477 #72657]  INFO -- : (0.000205s) SET standard_conforming_strings = ON
+I, [2015-08-10T09:23:42.525678 #72657]  INFO -- : (0.000116s) SET client_min_messages = 'WARNING'
+I, [2015-08-10T09:23:42.525827 #72657]  INFO -- : (0.000108s) SET DateStyle = 'ISO'
+I, [2015-08-10T09:23:42.529206 #72657]  INFO -- : (0.002765s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"api_endpoints"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.534533 #72657]  INFO -- : (0.001263s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"api_roles"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.538858 #72657]  INFO -- : (0.001364s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"contractors"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.545156 #72657]  INFO -- : (0.001116s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"deprecated_memberships"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.548661 #72657]  INFO -- : (0.001074s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"email_preferences"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.551856 #72657]  INFO -- : (0.001007s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"error_emails"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.554901 #72657]  INFO -- : (0.000190s) select 1
+I, [2015-08-10T09:23:42.555679 #72657]  INFO -- : (0.000134s) select 1
+I, [2015-08-10T09:23:42.557982 #72657]  INFO -- : (0.001072s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"logs"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.561205 #72657]  INFO -- : (0.000996s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"memberships"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.564751 #72657]  INFO -- : (0.000991s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"partners"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.568221 #72657]  INFO -- : (0.001043s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"programs"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.571446 #72657]  INFO -- : (0.001059s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"roles"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.574235 #72657]  INFO -- : (0.001020s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"service_urls"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.583832 #72657]  INFO -- : (0.001145s) SELECT "pg_attribute"."attname" AS "name", CAST("pg_attribute"."atttypid" AS integer) AS "oid", CAST("basetype"."oid" AS integer) AS "base_oid", format_type("basetype"."oid", "pg_type"."typtypmod") AS "db_base_type", format_type("pg_type"."oid", "pg_attribute"."atttypmod") AS "db_type", pg_get_expr("pg_attrdef"."adbin", "pg_class"."oid") AS "default", NOT "pg_attribute"."attnotnull" AS "allow_null", COALESCE(("pg_attribute"."attnum" = ANY("pg_index"."indkey")), false) AS "primary_key" FROM "pg_class" INNER JOIN "pg_attribute" ON ("pg_attribute"."attrelid" = "pg_class"."oid") INNER JOIN "pg_type" ON ("pg_type"."oid" = "pg_attribute"."atttypid") LEFT OUTER JOIN "pg_type" AS "basetype" ON ("basetype"."oid" = "pg_type"."typbasetype") LEFT OUTER JOIN "pg_attrdef" ON (("pg_attrdef"."adrelid" = "pg_class"."oid") AND ("pg_attrdef"."adnum" = "pg_attribute"."attnum")) LEFT OUTER JOIN "pg_index" ON (("pg_index"."indrelid" = "pg_class"."oid") AND ("pg_index"."indisprimary" IS TRUE)) WHERE (("pg_attribute"."attisdropped" IS FALSE) AND ("pg_attribute"."attnum" > 0) AND ("pg_class"."oid" = CAST(CAST('"users"' AS regclass) AS oid))) ORDER BY "pg_attribute"."attnum"
+I, [2015-08-10T09:23:42.882591 #72657]  INFO -- : (0.000135s) BEGIN
+I, [2015-08-10T09:23:42.883817 #72657]  INFO -- : (0.000772s) SELECT "relname" FROM "pg_class" INNER JOIN "pg_namespace" ON ("pg_namespace"."oid" = "pg_class"."relnamespace") WHERE (("relkind" = 'r') AND ("pg_namespace"."nspname" = any(current_schemas(false))))
+I, [2015-08-10T09:23:42.898004 #72657]  INFO -- : (0.013977s) truncate error_emails cascade
+I, [2015-08-10T09:23:42.910889 #72657]  INFO -- : (0.012748s) truncate logs cascade
+I, [2015-08-10T09:23:42.912354 #72657]  INFO -- : (0.001365s) truncate service_urls cascade
+I, [2015-08-10T09:23:42.913639 #72657]  INFO -- : (0.001201s) truncate sessions cascade
+I, [2015-08-10T09:23:42.921226 #72657]  INFO -- : (0.007492s) truncate email_preferences cascade
+I, [2015-08-10T09:23:42.925698 #72657]  INFO -- : (0.004338s) truncate partners cascade
+I, [2015-08-10T09:23:42.928487 #72657]  INFO -- : (0.002680s) truncate api_endpoints cascade
+I, [2015-08-10T09:23:42.929803 #72657]  INFO -- : (0.001185s) truncate api_roles_partners cascade
+I, [2015-08-10T09:23:42.930559 #72657]  INFO -- : (0.000664s) truncate api_endpoints_api_roles cascade
+I, [2015-08-10T09:23:42.934578 #72657]  INFO -- : (0.003916s) truncate roles cascade
+I, [2015-08-10T09:23:42.938285 #72657]  INFO -- : (0.003583s) truncate api_roles cascade
+I, [2015-08-10T09:23:42.941145 #72657]  INFO -- : (0.002752s) truncate contractors cascade
+I, [2015-08-10T09:23:42.946549 #72657]  INFO -- : (0.005299s) truncate users cascade
+I, [2015-08-10T09:23:42.949250 #72657]  INFO -- : (0.002565s) truncate programs cascade
+I, [2015-08-10T09:23:42.950065 #72657]  INFO -- : (0.000685s) truncate contractors_users cascade
+I, [2015-08-10T09:23:42.952665 #72657]  INFO -- : (0.002495s) truncate memberships cascade
+I, [2015-08-10T09:23:42.953604 #72657]  INFO -- : (0.000834s) truncate deprecated_memberships cascade
+I, [2015-08-10T09:23:42.957838 #72657]  INFO -- : (0.004101s) COMMIT
+I, [2015-08-10T09:23:43.018631 #72657]  INFO -- : (0.000877s) SELECT count(*) AS "count" FROM "users" WHERE ("email" = 'superman@example.com') LIMIT 1
+I, [2015-08-10T09:23:43.018975 #72657]  INFO -- : (0.000114s) BEGIN
+I, [2015-08-10T09:23:43.019875 #72657]  INFO -- : (0.000511s) INSERT INTO "users" ("email", "encrypted_password", "created_at", "identifier") VALUES ('superman@example.com', '$2a$10$3Rg.dbuPccSDJ/C3WkXH0OhlIAIY00/zoHINaSKIxrTzuYhd5Qf3C', '2015-08-10 09:23:43.017301-0700', 'd5ab2eef-4766-4f08-8efa-2a693d4bd522') RETURNING *
+I, [2015-08-10T09:23:43.019875 #72657]  INFO -- : (0.000511s) INSERT INTO "users" ("email", "encrypted_password", "created_at", "identifier") VALUES ('superman@example.com', '$2a$10$3Rg.dbuPccSDJ/C3WkXH0OhlIAIY00/zoHINaSKIxrTzuYhd5Qf3C', '2015-08-10 09:23:43.017301-0700', 'd5ab2eef-4766-4f08-8efa-2a693d4bd522') RETURNING *
+I, [2015-08-10T09:23:43.021881 #72657]  INFO -- : (0.001202s) COMMIT
+I, [2015-08-10T09:23:43.022637 #72657]  INFO -- : (0.000125s) BEGIN
+I, [2015-08-10T09:23:43.023345 #72657]  INFO -- : (0.000464s) INSERT INTO "programs" ("name", "identifier") VALUES ('test_program', 'test_program') RETURNING *
+I, [2015-08-10T09:23:43.023728 #72657]  INFO -- : (0.000293s) COMMIT
+I, [2015-08-10T09:23:43.024302 #72657]  INFO -- : (0.000307s) SELECT * FROM "roles" WHERE ("name" = 'superuser') LIMIT 1
+I, [2015-08-10T09:23:43.024867 #72657]  INFO -- : (0.000129s) BEGIN
+I, [2015-08-10T09:23:43.025349 #72657]  INFO -- : (0.000322s) INSERT INTO "roles" ("name") VALUES ('superuser') RETURNING *
+I, [2015-08-10T09:23:43.025772 #72657]  INFO -- : (0.000341s) COMMIT
+I, [2015-08-10T09:23:43.026409 #72657]  INFO -- : (0.000120s) BEGIN
+I, [2015-08-10T09:23:43.027310 #72657]  INFO -- : (0.000657s) INSERT INTO "memberships" ("user_id", "role_id", "created_at", "updated_at") VALUES (1, 1, '2015-08-10 09:23:43.026204-0700', '2015-08-10 09:23:43.026204-0700') RETURNING *
+I, [2015-08-10T09:23:43.027759 #72657]  INFO -- : (0.000252s) COMMIT
+I, [2015-08-10T09:23:43.040249 #72657]  INFO -- : (0.000385s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.040552 #72657]  INFO -- : Started GET "/unauthenticated" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.040658 #72657]  INFO -- : Parameters: {}
+I, [2015-08-10T09:23:43.042793 #72657]  INFO -- : (0.000239s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d') LIMIT 1
+I, [2015-08-10T09:23:43.043116 #72657]  INFO -- : (0.000161s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d') LIMIT 1
+I, [2015-08-10T09:23:43.043769 #72657]  INFO -- : (0.000466s) SELECT pg_attribute.attname AS pk FROM pg_class, pg_attribute, pg_index, pg_namespace WHERE pg_class.oid = pg_attribute.attrelid AND pg_class.relnamespace = pg_namespace.oid AND pg_class.oid = pg_index.indrelid AND pg_index.indkey[0] = pg_attribute.attnum AND pg_index.indisprimary = 't' AND pg_class.oid = CAST(CAST('"sessions"' AS regclass) AS oid)
+I, [2015-08-10T09:23:43.050498 #72657]  INFO -- : (0.006454s) INSERT INTO "sessions" ("sid", "session", "created_at") VALUES ('e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d', 'BAh7AA==
+', '2015-08-10 16:23:43.043178+0000') RETURNING "sid"
+I, [2015-08-10T09:23:43.052831 #72657]  INFO -- : (0.000459s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d') LIMIT 1
+I, [2015-08-10T09:23:43.059724 #72657]  INFO -- : (0.006512s) UPDATE "sessions" SET "session" = 'BAh7BkkiCmZsYXNoBjoGRUZ7AA==
+', "updated_at" = '2015-08-10 16:23:43.052974+0000' WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d')
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "GET /unauthenticated " 200 - 0.0208
+I, [2015-08-10T09:23:43.073609 #72657]  INFO -- : (0.000352s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.073989 #72657]  INFO -- : Started POST "/authentication/create" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.076880 #72657]  INFO -- : Parameters: {"email"=>"superman@example.com", "password"=>"[FILTERED]"}
+I, [2015-08-10T09:23:43.078364 #72657]  INFO -- : (0.000309s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d') LIMIT 1
+I, [2015-08-10T09:23:43.078701 #72657]  INFO -- : (0.000202s) SELECT * FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d') LIMIT 1
+I, [2015-08-10T09:23:43.085915 #72657]  INFO -- : (0.006714s) SELECT * FROM "users" WHERE ("email" ILIKE 'superman@example.com' ESCAPE '\') LIMIT 1
+I, [2015-08-10T09:23:43.154021 #72657]  INFO -- : (0.000447s) SELECT "roles".* FROM "roles" INNER JOIN "memberships" ON ("memberships"."role_id" = "roles"."id") WHERE ("memberships"."user_id" = 1)
+I, [2015-08-10T09:23:43.155161 #72657]  INFO -- : (0.000150s) BEGIN
+I, [2015-08-10T09:23:43.155891 #72657]  INFO -- : (0.000416s) INSERT INTO "logs" ("actor", "action", "metadata", "level", "created_at", "updated_at") VALUES ('superman@example.com', 'authenticate', '{"message":{"ip":"127.0.0.1","url":"http://localhost:33399/authentication/create","referer":"http://localhost:33399/unauthenticated","result":"success"}}', 1, '2015-08-10 09:23:43.154374-0700', '2015-08-10 09:23:43.154912-0700') RETURNING *
+I, [2015-08-10T09:23:43.157337 #72657]  INFO -- : (0.001226s) COMMIT
+I, [2015-08-10T09:23:43.158008 #72657]  INFO -- : (0.000247s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d') LIMIT 1
+I, [2015-08-10T09:23:43.158477 #72657]  INFO -- : (0.000333s) DELETE FROM "sessions" WHERE (sid = 'e909352eb9a3950b09ae25f24e8f5e89ff7a087e2d067cdfa53eda6bf1fcb22d')
+I, [2015-08-10T09:23:43.158826 #72657]  INFO -- : (0.000204s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.159146 #72657]  INFO -- : (0.000184s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.159689 #72657]  INFO -- : (0.000321s) INSERT INTO "sessions" ("sid", "session", "created_at") VALUES ('dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1', 'BAh7B0kiCmZsYXNoBjoGRUZ7AEkiHHdhcmRlbi51c2VyLmRlZmF1bHQua2V5
+BjsAVGkG
+', '2015-08-10 16:23:43.159204+0000') RETURNING "sid"
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "POST /authentication/create " 302 - 0.0862
+I, [2015-08-10T09:23:43.161076 #72657]  INFO -- : (0.000202s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.161270 #72657]  INFO -- : Started GET "/users" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.161349 #72657]  INFO -- : Parameters: {}
+I, [2015-08-10T09:23:43.161980 #72657]  INFO -- : (0.000189s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.162261 #72657]  INFO -- : (0.000169s) SELECT * FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.162609 #72657]  INFO -- : (0.000181s) SELECT * FROM "users" WHERE "id" = 1
+I, [2015-08-10T09:23:43.163084 #72657]  INFO -- : (0.000267s) SELECT "roles".* FROM "roles" INNER JOIN "memberships" ON ("memberships"."role_id" = "roles"."id") WHERE ("memberships"."user_id" = 1)
+I, [2015-08-10T09:23:43.163084 #72657]  INFO -- : (0.000267s) SELECT "roles".* FROM "roles" INNER JOIN "memberships" ON ("memberships"."role_id" = "roles"."id") WHERE ("memberships"."user_id" = 1)
+I, [2015-08-10T09:23:43.164162 #72657]  INFO -- : (0.000282s) SELECT count(*) AS "count" FROM "users" LIMIT 1
+I, [2015-08-10T09:23:43.164916 #72657]  INFO -- : (0.000200s) SELECT count(*) AS "count" FROM "users" LIMIT 1
+I, [2015-08-10T09:23:43.165312 #72657]  INFO -- : (0.000190s) SELECT count(*) AS "count" FROM "memberships" LIMIT 1
+I, [2015-08-10T09:23:43.165885 #72657]  INFO -- : (0.000326s) SELECT count(*) AS "count" FROM "deprecated_memberships" WHERE ("membership_id" IS NOT NULL) LIMIT 1
+I, [2015-08-10T09:23:43.166205 #72657]  INFO -- : (0.000143s) SELECT * FROM "deprecated_memberships" WHERE (("membership_id" IS NULL) AND ("archived" IS FALSE))
+I, [2015-08-10T09:23:43.166518 #72657]  INFO -- : (0.000201s) SELECT * FROM "users" LIMIT 10 OFFSET 0
+I, [2015-08-10T09:23:43.167742 #72657]  INFO -- : (0.000262s) SELECT * FROM "memberships" WHERE ("memberships"."user_id" = 1)
+I, [2015-08-10T09:23:43.168703 #72657]  INFO -- : (0.000340s) SELECT * FROM "deprecated_memberships" WHERE (("user_id" = 1) AND ("membership_id" IS NULL) AND ("archived" IS FALSE))
+I, [2015-08-10T09:23:43.169489 #72657]  INFO -- : (0.000217s) SELECT * FROM "roles" WHERE "id" = 1
+I, [2015-08-10T09:23:43.169976 #72657]  INFO -- : (0.000205s) SELECT * FROM "deprecated_memberships" WHERE (("user_id" = 1) AND ("membership_id" IS NULL) AND ("archived" IS FALSE))
+I, [2015-08-10T09:23:43.171113 #72657]  INFO -- : (0.000270s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.171715 #72657]  INFO -- : (0.000390s) UPDATE "sessions" SET "session" = 'BAh7B0kiCmZsYXNoBjoGRUZ7AEkiHHdhcmRlbi51c2VyLmRlZmF1bHQua2V5
+BjsAVGkG
+', "updated_at" = '2015-08-10 16:23:43.171203+0000' WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1')
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "GET /users " 200 - 0.0109
+I, [2015-08-10T09:23:43.174465 #72657]  INFO -- : (0.000248s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.174667 #72657]  INFO -- : Started GET "/admin" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.174744 #72657]  INFO -- : Parameters: {}
+I, [2015-08-10T09:23:43.175478 #72657]  INFO -- : (0.000194s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.175811 #72657]  INFO -- : (0.000202s) SELECT * FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.176216 #72657]  INFO -- : (0.000210s) SELECT * FROM "users" WHERE "id" = 1
+I, [2015-08-10T09:23:43.176659 #72657]  INFO -- : (0.000228s) SELECT "roles".* FROM "roles" INNER JOIN "memberships" ON ("memberships"."role_id" = "roles"."id") WHERE ("memberships"."user_id" = 1)
+I, [2015-08-10T09:23:43.178012 #72657]  INFO -- : (0.000446s) SELECT * FROM "service_urls" WHERE ("name" = 'salesforce_cache') ORDER BY "updated_at" DESC LIMIT 1
+I, [2015-08-10T09:23:43.179261 #72657]  INFO -- : (0.000198s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.179809 #72657]  INFO -- : (0.000362s) UPDATE "sessions" SET "session" = 'BAh7B0kiCmZsYXNoBjoGRUZ7AEkiHHdhcmRlbi51c2VyLmRlZmF1bHQua2V5
+BjsAVGkG
+', "updated_at" = '2015-08-10 16:23:43.179344+0000' WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1')
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "GET /admin " 200 - 0.0056
+I, [2015-08-10T09:23:43.184444 #72657]  INFO -- : (0.000326s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.184724 #72657]  INFO -- : Started POST "/service_urls/salesforce_cache" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.184906 #72657]  INFO -- : Parameters: {"salesforce_cache_url"=>"www.rapgenius.com"}
+I, [2015-08-10T09:23:43.185782 #72657]  INFO -- : (0.000210s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.186062 #72657]  INFO -- : (0.000166s) SELECT * FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.186421 #72657]  INFO -- : (0.000169s) SELECT * FROM "users" WHERE "id" = 1
+I, [2015-08-10T09:23:43.186859 #72657]  INFO -- : (0.000231s) SELECT "roles".* FROM "roles" INNER JOIN "memberships" ON ("memberships"."role_id" = "roles"."id") WHERE ("memberships"."user_id" = 1)
+I, [2015-08-10T09:23:43.187510 #72657]  INFO -- : (0.000088s) BEGIN
+I, [2015-08-10T09:23:43.188070 #72657]  INFO -- : (0.000309s) INSERT INTO "service_urls" ("name", "url", "created_at", "updated_at") VALUES ('salesforce_cache', 'www.rapgenius.com', '2015-08-10 09:23:43.187329-0700', '2015-08-10 09:23:43.187329-0700') RETURNING *
+I, [2015-08-10T09:23:43.188528 #72657]  INFO -- : (0.000285s) COMMIT
+I, [2015-08-10T09:23:43.189331 #72657]  INFO -- : (0.000237s) SELECT * FROM "service_urls" WHERE ("name" = 'salesforce_cache') ORDER BY "updated_at" DESC LIMIT 1
+I, [2015-08-10T09:23:43.190345 #72657]  INFO -- : (0.000193s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1') LIMIT 1
+I, [2015-08-10T09:23:43.190888 #72657]  INFO -- : (0.000353s) UPDATE "sessions" SET "session" = 'BAh7B0kiCmZsYXNoBjoGRUZ7BjoLbm90aWNlSSIhU2FsZXNmb3JjZSBDYWNo
+ZSBVcmwgdXBkYXRlZAY7AFRJIhx3YXJkZW4udXNlci5kZWZhdWx0LmtleQY7
+AFRpBg==
+', "updated_at" = '2015-08-10 16:23:43.190426+0000' WHERE (sid = 'dcaf761fefa25dd6230fbf5a7137cb9c7ab17df104faa49b6c40129f263293e1')
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "POST /service_urls/salesforce_cache " 200 - 0.0066
+I, [2015-08-10T09:23:43.201339 #72657]  INFO -- : (0.000158s) BEGIN
+I, [2015-08-10T09:23:43.202565 #72657]  INFO -- : (0.000697s) SELECT "relname" FROM "pg_class" INNER JOIN "pg_namespace" ON ("pg_namespace"."oid" = "pg_class"."relnamespace") WHERE (("relkind" = 'r') AND ("pg_namespace"."nspname" = any(current_schemas(false))))
+I, [2015-08-10T09:23:43.215707 #72657]  INFO -- : (0.012953s) truncate error_emails cascade
+I, [2015-08-10T09:23:43.227481 #72657]  INFO -- : (0.011628s) truncate service_urls cascade
+I, [2015-08-10T09:23:43.229952 #72657]  INFO -- : (0.002324s) truncate sessions cascade
+I, [2015-08-10T09:23:43.230808 #72657]  INFO -- : (0.000764s) truncate contractors_users cascade
+I, [2015-08-10T09:23:43.234584 #72657]  INFO -- : (0.003677s) truncate memberships cascade
+I, [2015-08-10T09:23:43.236056 #72657]  INFO -- : (0.001317s) truncate deprecated_memberships cascade
+I, [2015-08-10T09:23:43.240373 #72657]  INFO -- : (0.004208s) truncate partners cascade
+I, [2015-08-10T09:23:43.241886 #72657]  INFO -- : (0.001411s) truncate logs cascade
+I, [2015-08-10T09:23:43.248459 #72657]  INFO -- : (0.006418s) truncate email_preferences cascade
+I, [2015-08-10T09:23:43.253470 #72657]  INFO -- : (0.004887s) truncate users cascade
+I, [2015-08-10T09:23:43.254351 #72657]  INFO -- : (0.000734s) truncate api_roles_partners cascade
+I, [2015-08-10T09:23:43.256863 #72657]  INFO -- : (0.002393s) truncate api_endpoints cascade
+I, [2015-08-10T09:23:43.257898 #72657]  INFO -- : (0.000898s) truncate api_endpoints_api_roles cascade
+I, [2015-08-10T09:23:43.262001 #72657]  INFO -- : (0.003970s) truncate roles cascade
+I, [2015-08-10T09:23:43.265417 #72657]  INFO -- : (0.003284s) truncate api_roles cascade
+I, [2015-08-10T09:23:43.269126 #72657]  INFO -- : (0.003571s) truncate contractors cascade
+I, [2015-08-10T09:23:43.272563 #72657]  INFO -- : (0.003290s) truncate programs cascade
+I, [2015-08-10T09:23:43.276977 #72657]  INFO -- : (0.004261s) COMMIT
+I, [2015-08-10T09:23:43.335738 #72657]  INFO -- : (0.000612s) SELECT count(*) AS "count" FROM "users" WHERE ("email" = 'superman@example.com') LIMIT 1
+I, [2015-08-10T09:23:43.336033 #72657]  INFO -- : (0.000085s) BEGIN
+I, [2015-08-10T09:23:43.336753 #72657]  INFO -- : (0.000417s) INSERT INTO "users" ("email", "encrypted_password", "created_at", "identifier") VALUES ('superman@example.com', '$2a$10$/UVgrP2xsIro0r.GWG0cpuUvjrTDdoA59hpfvEFW9m4TzbXmJIReq', '2015-08-10 09:23:43.334657-0700', '901898e8-ff3a-4f02-8e31-59e94e650758') RETURNING *
+I, [2015-08-10T09:23:43.338168 #72657]  INFO -- : (0.001202s) COMMIT
+I, [2015-08-10T09:23:43.338563 #72657]  INFO -- : (0.000105s) BEGIN
+I, [2015-08-10T09:23:43.339310 #72657]  INFO -- : (0.000523s) INSERT INTO "programs" ("name", "identifier") VALUES ('test_program', 'test_program') RETURNING *
+I, [2015-08-10T09:23:43.339683 #72657]  INFO -- : (0.000270s) COMMIT
+I, [2015-08-10T09:23:43.340140 #72657]  INFO -- : (0.000292s) SELECT * FROM "roles" WHERE ("name" = 'superuser') LIMIT 1
+I, [2015-08-10T09:23:43.340395 #72657]  INFO -- : (0.000095s) BEGIN
+I, [2015-08-10T09:23:43.340791 #72657]  INFO -- : (0.000236s) INSERT INTO "roles" ("name") VALUES ('superuser') RETURNING *
+I, [2015-08-10T09:23:43.341180 #72657]  INFO -- : (0.000309s) COMMIT
+I, [2015-08-10T09:23:43.341462 #72657]  INFO -- : (0.000086s) BEGIN
+I, [2015-08-10T09:23:43.342242 #72657]  INFO -- : (0.000581s) INSERT INTO "memberships" ("user_id", "role_id", "created_at", "updated_at") VALUES (2, 2, '2015-08-10 09:23:43.341293-0700', '2015-08-10 09:23:43.341293-0700') RETURNING *
+I, [2015-08-10T09:23:43.342706 #72657]  INFO -- : (0.000274s) COMMIT
+I, [2015-08-10T09:23:43.346879 #72657]  INFO -- : (0.000347s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.347131 #72657]  INFO -- : Started GET "/unauthenticated" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.347131 #72657]  INFO -- : Started GET "/unauthenticated" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.347238 #72657]  INFO -- : Parameters: {}
+I, [2015-08-10T09:23:43.348645 #72657]  INFO -- : (0.000226s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4') LIMIT 1
+I, [2015-08-10T09:23:43.348937 #72657]  INFO -- : (0.000155s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4') LIMIT 1
+I, [2015-08-10T09:23:43.349561 #72657]  INFO -- : (0.000397s) INSERT INTO "sessions" ("sid", "session", "created_at") VALUES ('84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4', 'BAh7AA==
+', '2015-08-10 16:23:43.348988+0000') RETURNING "sid"
+I, [2015-08-10T09:23:43.350734 #72657]  INFO -- : (0.000275s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4') LIMIT 1
+I, [2015-08-10T09:23:43.351314 #72657]  INFO -- : (0.000363s) UPDATE "sessions" SET "session" = 'BAh7BkkiCmZsYXNoBjoGRUZ7AA==
+', "updated_at" = '2015-08-10 16:23:43.350823+0000' WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4')
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "GET /unauthenticated " 200 - 0.0048
+I, [2015-08-10T09:23:43.356059 #72657]  INFO -- : (0.000298s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.356280 #72657]  INFO -- : Started POST "/authentication/create" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.356468 #72657]  INFO -- : Parameters: {"email"=>"superman@example.com", "password"=>"[FILTERED]"}
+I, [2015-08-10T09:23:43.357727 #72657]  INFO -- : (0.000210s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4') LIMIT 1
+I, [2015-08-10T09:23:43.358021 #72657]  INFO -- : (0.000174s) SELECT * FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4') LIMIT 1
+I, [2015-08-10T09:23:43.358564 #72657]  INFO -- : (0.000202s) SELECT * FROM "users" WHERE ("email" ILIKE 'superman@example.com' ESCAPE '\') LIMIT 1
+I, [2015-08-10T09:23:43.419973 #72657]  INFO -- : (0.000395s) SELECT "roles".* FROM "roles" INNER JOIN "memberships" ON ("memberships"."role_id" = "roles"."id") WHERE ("memberships"."user_id" = 2)
+I, [2015-08-10T09:23:43.420579 #72657]  INFO -- : (0.000106s) BEGIN
+I, [2015-08-10T09:23:43.421302 #72657]  INFO -- : (0.000441s) INSERT INTO "logs" ("actor", "action", "metadata", "level", "created_at", "updated_at") VALUES ('superman@example.com', 'authenticate', '{"message":{"ip":"127.0.0.1","url":"http://localhost:33399/authentication/create","referer":"http://localhost:33399/unauthenticated","result":"success"}}', 1, '2015-08-10 09:23:43.420213-0700', '2015-08-10 09:23:43.420373-0700') RETURNING *
+I, [2015-08-10T09:23:43.422741 #72657]  INFO -- : (0.001208s) COMMIT
+I, [2015-08-10T09:23:43.423438 #72657]  INFO -- : (0.000300s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4') LIMIT 1
+I, [2015-08-10T09:23:43.423977 #72657]  INFO -- : (0.000387s) DELETE FROM "sessions" WHERE (sid = '84a4b2e0102aaaf40b4391f299fefc8027b9451b3fd9fed00c3ddeec6ff60aa4')
+I, [2015-08-10T09:23:43.424336 #72657]  INFO -- : (0.000184s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'b9e8c9ae0529887f7b7a6e16bf1070905ed8bfe41896c2d11520339daa71ce7d') LIMIT 1
+I, [2015-08-10T09:23:43.424700 #72657]  INFO -- : (0.000219s) SELECT 1 AS "one" FROM "sessions" WHERE (sid = 'b9e8c9ae0529887f7b7a6e16bf1070905ed8bfe41896c2d11520339daa71ce7d') LIMIT 1
+I, [2015-08-10T09:23:43.425264 #72657]  INFO -- : (0.000337s) INSERT INTO "sessions" ("sid", "session", "created_at") VALUES ('b9e8c9ae0529887f7b7a6e16bf1070905ed8bfe41896c2d11520339daa71ce7d', 'BAh7B0kiCmZsYXNoBjoGRUZ7AEkiHHdhcmRlbi51c2VyLmRlZmF1bHQua2V5
+BjsAVGkH
+', '2015-08-10 16:23:43.424758+0000') RETURNING "sid"
+127.0.0.1 - - [10/Aug/2015:09:23:43 -0700] "POST /authentication/create " 302 - 0.0695
+I, [2015-08-10T09:23:43.426673 #72657]  INFO -- : (0.000233s) SELECT NULL AS "nil" FROM "sessions" LIMIT 1
+I, [2015-08-10T09:23:43.426887 #72657]  INFO -- : Started GET "/users" for 127.0.0.1 at 2015-08-10 09:23:43 -0700
+I, [2015-08-10T09:23:43.426967 #72657]  INFO -- : Parameters: {}

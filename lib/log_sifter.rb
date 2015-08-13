@@ -14,8 +14,8 @@ class LogSifter
 
   def shell_script
     #set slow_do_call_metric in seconds
-    slow_do_call_metric = 0.010000
-    very_slow_do_call_metric = 0.100000
+    slow_db_call_metric = 0.010000
+    very_slow_db_call_metric = 0.100000
 
     non_server_logs_count = 0
 
@@ -74,12 +74,12 @@ class LogSifter
 #     From: #{log_entry.client_ip}
 #     At: #{log_entry.date} #{log_entry.timezone}
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-#           REQUEST
-#           stdout.puts request
+# REQUEST
+# stdout.puts request
         else
-          if log_entry.db_call_time_as_float > slow_do_call_metric
+          if log_entry.db_call_time_as_float > slow_db_call_metric
             slow_db_call_count += 1
-          elsif log_entry.db_call_time_as_float > very_slow_do_call_metric
+          elsif log_entry.db_call_time_as_float > very_slow_db_call_metric
             very_slow_db_call_count += 1
           end
           non_server_logs_count += 1
@@ -111,13 +111,13 @@ class LogSifter
       Number of non-tracked verbs: #{non_tracked_request_verb.to_s}
 
     DB Calls:
-      Number of DB calls taking longer than #{slow_do_call_metric.to_s} seconds: #{slow_db_call_count.to_s}
-      Number of DB calls taking longer than #{very_slow_do_call_metric.to_s} seconds: #{very_slow_db_call_count.to_s}
+      Number of DB calls taking longer than #{slow_db_call_metric.to_s} seconds: #{slow_db_call_count.to_s}
+      Number of DB calls taking longer than #{very_slow_db_call_metric.to_s} seconds: #{very_slow_db_call_count.to_s}
 
     OUTPUT
 
     stdout.puts message
-    
+
 # Email message
 
     mail = Mail.new do
@@ -134,6 +134,8 @@ class LogSifter
   attr_reader :logfile, :stdout
 
 end
+
+# LogEntry extracts information about individual entries that are passed to it.
 
 class LogEntry
   attr_reader :route, :log_type, :date, :http_code, :call_time, :timezone, :client_ip
@@ -177,11 +179,10 @@ class LogEntry
   def db_call_time_as_float
     db_call_time.to_f
   end
+
   private
 
   attr_reader :line, :array
-
-  # (array[6].tr('^0-9\.','').to_f*1000000).to_i  #microseconds
 
   def raw_http_verb
     array[5].to_s

@@ -15,3 +15,4 @@ Replace 'test' with desired logfile
 * refactor to take out unecessary files
 * create an executable
 * create this as a gem
+* QA problem - two calls going at exact same time and creates a sql error because it is trying to create the same exact entry twice. Should be looking for two identical calls followed by an error.

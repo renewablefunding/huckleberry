@@ -1,5 +1,5 @@
 
-require_relative '../log_sifter'
+require_relative '../lib/log_sifter'
 require_relative '../helpers/spec_helper'
 
 RSpec.describe LogSifter do

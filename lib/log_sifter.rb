@@ -89,7 +89,7 @@ class LogSifter
 
 # Output to stdout
 
-    stdout.puts <<-OUTPUT
+    message = <<-OUTPUT
 
     Database Logs: #{non_server_logs_count.to_s}
 
@@ -116,18 +116,9 @@ class LogSifter
 
     OUTPUT
 
+    stdout.puts message
+    
 # Email message
-
-    message = <<-MESSAGE
-
-    Non-Server Logs: #{non_server_logs_count.to_s}
-
-    Server Logs:
-      Status 200: #{status_200_count.to_s}
-      Status 302: #{status_302_count.to_s}
-      Status 404: #{status_404_count.to_s}
-      Status 500: #{status_500_count.to_s}
-    MESSAGE
 
     mail = Mail.new do
       from    'testemail@test.com'

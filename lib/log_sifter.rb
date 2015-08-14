@@ -41,6 +41,8 @@ class LogSifter
     very_slow_db_call_count = 0
     slow_db_call_count = 0
 
+    file_sorter(logfile)
+
     File.open(logfile) do |f|
       f.each_line do |line|
         log_entry = LogEntry.new(line)
@@ -157,4 +159,27 @@ class LogSifter
 
   private
   attr_reader :logfile, :stdout
+
+  def file_sorter(file)
+    keyword_config = YAML.load_file(File.join(File.dirname(__FILE__) + "/../config/log_keywords.yml"))
+    prod_logs_keywords = keyword_config['production_keywords']
+    new_relic_keywords = keyword_config['new_relic_keywords']
+    mailer_keywords = keyword_config['mailer_keywords']
+    process_runner_keywords = keyword_config['process_runner_keywords']
+    thin_keywords = keyword_config['thin_keywords']
+
+    filename = File.basename(file)
+    filename_array = filename.split(".")[0].split(/[\_\-]/)
+    if !(filename_array & prod_logs_keywords).empty?
+      puts "production"
+    elsif !(filename_array & new_relic_keywords).empty?
+      puts "new relic"
+    elsif !(filename_array & mailer_keywords).empty?
+      puts "mailer logs"
+    elsif !(filename_array & process_runner_keywords).empty?
+      puts "process runner"
+    elsif !(filename_array & thin_keywords).empty?
+      puts "thin"
+    end
+  end
 end

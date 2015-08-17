@@ -1,0 +1,9 @@
+subject: "Huckleberry | Logfile report"
+
+subject_log_not_found: "Huckleberry | Unknown logfile"
+
+from: "foo@bar.com"
+
+# add extra emails with commas between
+
+recipients: "amcfadden@renewfund.com"

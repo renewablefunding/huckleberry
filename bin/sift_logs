@@ -8,7 +8,7 @@ def show_usage
 
       Will scan the given logfile, return relevant information
       and send an email with that relevant info.
-      
+
 
   USAGE
 
@@ -18,5 +18,5 @@ end
 if ARGV.first == nil
   show_usage
 else
-  LogSifter.new(ARGV.first)
+  LogSifter.new(ARGV.first).shell_script
 end

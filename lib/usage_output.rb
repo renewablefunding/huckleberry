@@ -1,10 +1,5 @@
 class UsageOutput
-  def initialize
-    show_usage
-  end
-
-  private
-  def show_usage
+  def self.show_usage
     usage = <<-USAGE
    - - - - - - - - - - - - - - - - - - - - - - - - - -
                 WELCOME TO HUCKLEBERRY

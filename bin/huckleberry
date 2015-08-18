@@ -1,15 +1,10 @@
 #!/usr/bin/env ruby
-
+require 'english'
 require_relative '../lib/log_sifter'
 require_relative '../lib/usage_output'
 
 if ARGV.first.nil?
-  UsageOutput.new
+  UsageOutput.show_usage
 else
-  LogSifter.new(ARGV.first).run_script(ARGV[1])
-end
-
-if ARGV[1] == "mailcatcher"
-  Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
-  LogSifter.new(ARGV.first).run_script(ARGV[1])
+  LogSifter.new(ARGV.first).run_script(ARGV[1] ||= "email")
 end

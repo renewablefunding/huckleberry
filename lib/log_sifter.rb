@@ -1,26 +1,41 @@
-require 'english'
+require_relative '../helpers/app_helper'
 require_relative './prod_log_parse'
 require_relative './log_maker'
 require_relative './log_duplicate_checker'
 require_relative './usage_output'
-require_relative '../helpers/app_helper'
 
 class LogSifter
   def initialize(logfile, mode = "email")
     @logfile = logfile
   end
 
-  def run_script(mode = "email")
+  def run_script(mode)
     if parsed_logfile = file_sorter
       duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
       duplicate_log_count = duplicate_logs.length
       output_log = LogMaker.new(parsed_logfile.message_body_output, parsed_logfile.headline_output, parsed_logfile.counts_output, parsed_logfile.important_logs, duplicate_logs, duplicate_log_count)
-      if mode == "email" || mode == "mailcatcher"
+      case mode
+      when "email"
         output_log.send_mail
-      elsif mode == "vim"
+      when "mailcatcher"
+        Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
+        output_log.send_mail
+      when "vim"
         output_log.open_in_vim
       else
-        UsageOutput.new
+        UsageOutput.show_usage
+      end
+    else
+      case mode
+      when "email"
+        send_incorrect_log_email
+      when "mailcatcher"
+        Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
+        send_incorrect_log_email
+      when "vim"
+        puts incorrect_logfile_output
+      else
+        UsageOutput.show_usage
       end
     end
   end
@@ -49,7 +64,6 @@ class LogSifter
     elsif !(filename_array & thin_keywords).empty?
       puts "thin"
     else
-      send_incorrect_log_email
       return false
     end
     return log
@@ -59,14 +73,23 @@ class LogSifter
     File.basename(logfile)
   end
 
+  def incorrect_logfile_output
+    <<-OUTPUT
+      An unknown filetype was given to huckleberry.
+      The file name was (#{filename}).
+
+      Please update the log_keywords.yml if you would like this type of file processed in the future!
+    OUTPUT
+  end
+
   def send_incorrect_log_email
-    non_matched_filename = filename
+    message_body = incorrect_logfile_output
     mailer_config = YAML.load_file(File.join(File.dirname(__FILE__) + "/../config/email_options.yml"))
     Mail.deliver do
       from        mailer_config['from']
       to          mailer_config['recipients']
       subject     mailer_config['subject_log_not_found']
-      body        "An unknown filetype was given to huckleberry. The file name was (#{non_matched_filename}). Please update the log_keywords.yml if you would like this type of file processed in the future!"
+      body        message_body
     end
   end
 end

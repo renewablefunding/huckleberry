@@ -1,9 +1,6 @@
 require_relative '../helpers/app_helper'
 
-
 class LogMaker
-  attr_reader :message
-
   def initialize(message, headline_output, counts_output, important_log_output, duplicate_logs, duplicate_log_count)
     @message = message
     @important_log_output = important_log_output
@@ -30,9 +27,10 @@ class LogMaker
       add_file    file.path
     end
   end
+  
   private
 
-  attr_reader :important_log_output, :counts_output, :duplicate_logs, :duplicate_log_count, :headline_output
+  attr_reader :important_log_output, :counts_output, :duplicate_logs, :duplicate_log_count, :headline_output,:message
 
   def create_file
     f = File.new("parsed_logs/#{DateTime.now.to_s}_huckleberry_log", "w")

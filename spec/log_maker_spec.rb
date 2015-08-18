@@ -13,7 +13,7 @@ RSpec.describe LogMaker do
 
       before(:each) do
         Mail::TestMailer.deliveries.clear
-        subject.email_script
+        subject.run_script
       end
 
       it { should have_sent_email }
@@ -33,7 +33,7 @@ RSpec.describe LogMaker do
       subject { LogSifter.new('spec/fixtures/test.log') }
       it "will have the subject line for subject_log_not_found" do
         Mail::TestMailer.deliveries.clear
-        subject.email_script
+        subject.run_script
         expect(Mail::TestMailer.deliveries.first.subject).to eq(mailer_config['subject_log_not_found'])
       end
     end

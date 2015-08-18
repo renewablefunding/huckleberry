@@ -2,7 +2,7 @@ subject: "Huckleberry | Logfile report"
 
 subject_log_not_found: "Huckleberry | Unknown logfile"
 
-from: "foo@bar.com"
+from: "foo@example.com"
 
 # add extra emails with commas between
 

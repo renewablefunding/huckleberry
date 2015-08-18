@@ -4,19 +4,38 @@ require_relative '../lib/log_sifter'
 
 def show_usage
   usage = <<-USAGE
-  Usage: ./bin/sift_logs <relative_path_to_log>
+ - - - - - - - - - - - - - - - - - - - - - - - - - -
+              WELCOME TO HUCKLEBERRY
+ - - - - - - - - - - - - - - - - - - - - - - - - - -
+  TO RUN:
 
-      Will scan the given logfile, return relevant information
-      and send an email with that relevant info.
+  ./bin/sift_logs <relative_path_to_log>
 
+      Will scan the given logfile, and send
+      an email with that relevant info.
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - -
+  TO RUN IN TEST MODE:
+
+  mailcatcher
+  ./bin/sift_logs <relative_path_to_log> test_mode
+
+    navivate to localhost:1080 to see incoming mail.
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   USAGE
 
   puts usage
 end
 
-if ARGV.first == nil
+if ARGV.first.nil?
   show_usage
 else
+  LogSifter.new(ARGV.first).shell_script
+end
+
+if ARGV[1] == "test_mode"
+  Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
   LogSifter.new(ARGV.first).shell_script
 end

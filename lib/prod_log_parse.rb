@@ -6,7 +6,35 @@ class ProdLogParse
     @log = log
     @important_logs = []
     @counts = {}
+    parse_log
   end
+
+  def headline_output
+    <<-OUTPUT
+  Huckleberry Logs #{DateTime.now.to_s}
+  _______________________________________________
+      OUTPUT
+  end
+
+  def counts_output
+  <<-OUTPUT
+#{counts["404"].to_s} 404's found
+#{counts["500"].to_s} 500's found
+_______________________________________________
+    OUTPUT
+  end
+
+  def message_body_output
+    # add in critical finds to the message body
+    message = <<-MESSAGE
+
+    Huckleberry Log Report for #{DateTime.now.to_s} is attached.
+
+    MESSAGE
+  end
+
+  private
+  attr_reader :log
 
   def parse_log
     count_404 = 0
@@ -25,27 +53,4 @@ class ProdLogParse
     counts["404"] = count_404
     counts["500"] = count_500
   end
-
-  def output
-  <<-OUTPUT
-Huckleberry Logs #{DateTime.now.to_s}
-
-#{counts["404"].to_s} 404's found
-#{counts["500"].to_s} 500's found
-_______________________________________________
-    OUTPUT
-  end
-
-  def message
-    message = <<-MESSAGE
-
-    Huckleberry Log Report for #{DateTime.now.to_s}
-
-
-    MESSAGE
-  end
-
-  private
-  attr_reader :log
-
 end

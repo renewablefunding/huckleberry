@@ -5,22 +5,21 @@ require_relative './log_duplicate_checker'
 require_relative '../helpers/app_helper'
 
 class LogSifter
-  def initialize(logfile, stdout = $stdout)
+  def initialize(logfile,test_mode = nil)
     @logfile = logfile
-    @stdout = stdout
   end
 
   def shell_script
     if parsed_logfile = file_sorter
       duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
       duplicate_log_count = duplicate_logs.length
-      email = LogMailer.new(parsed_logfile.message, parsed_logfile.output, parsed_logfile.important_logs, duplicate_logs, duplicate_log_count)
+      email = LogMailer.new(parsed_logfile.message_body_output, parsed_logfile.headline_output, parsed_logfile.counts_output, parsed_logfile.important_logs, duplicate_logs, duplicate_log_count)
       email.send_mail
     end
   end
 
   private
-  attr_reader :logfile, :stdout
+  attr_reader :logfile
 
   def file_sorter
     keyword_config = YAML.load_file(File.join(File.dirname(__FILE__) + "/../config/log_keywords.yml"))
@@ -34,7 +33,6 @@ class LogSifter
     filename_array = filename.split(".")[0].split(/[\_\-]/)
     if !(filename_array & prod_logs_keywords).empty?
       log = ProdLogParse.new(File.open(logfile))
-      log.parse_log
     elsif !(filename_array & new_relic_keywords).empty?
       puts "new relic"
     elsif !(filename_array & mailer_keywords).empty?

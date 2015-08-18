@@ -11,16 +11,25 @@ class ProdLogParse
 
   def headline_output
     <<-OUTPUT
-  Huckleberry Logs #{DateTime.now.to_s}
-  _______________________________________________
+  - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                    HUCKLEBERRY
+
+              #{DateTime.now.to_s}
+
+  - - - - - - - - - - - - - - - - - - - - - - - - - -
       OUTPUT
   end
 
   def counts_output
   <<-OUTPUT
-#{counts["404"].to_s} 404's found
-#{counts["500"].to_s} 500's found
-_______________________________________________
+  - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+          #{counts["404"].to_s} 404's found
+
+          #{counts["500"].to_s} 500's found
+
+  - - - - - - - - - - - - - - - - - - - - - - - - - -
     OUTPUT
   end
 

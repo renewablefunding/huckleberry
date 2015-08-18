@@ -1,20 +1,27 @@
 require 'english'
 require_relative './prod_log_parse'
-require_relative './log_mailer'
+require_relative './log_maker'
 require_relative './log_duplicate_checker'
+require_relative './usage_output'
 require_relative '../helpers/app_helper'
 
 class LogSifter
-  def initialize(logfile,test_mode = nil)
+  def initialize(logfile, mode = "email")
     @logfile = logfile
   end
 
-  def shell_script
+  def run_script(mode = "email")
     if parsed_logfile = file_sorter
       duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
       duplicate_log_count = duplicate_logs.length
-      email = LogMailer.new(parsed_logfile.message_body_output, parsed_logfile.headline_output, parsed_logfile.counts_output, parsed_logfile.important_logs, duplicate_logs, duplicate_log_count)
-      email.send_mail
+      output_log = LogMaker.new(parsed_logfile.message_body_output, parsed_logfile.headline_output, parsed_logfile.counts_output, parsed_logfile.important_logs, duplicate_logs, duplicate_log_count)
+      if mode == "email" || mode == "mailcatcher"
+        output_log.send_mail
+      elsif mode == "vim"
+        output_log.open_in_vim
+      else
+        UsageOutput.new
+      end
     end
   end
 

@@ -1,7 +1,7 @@
 require_relative '../helpers/app_helper'
 
 
-class LogMailer
+class LogMaker
   attr_reader :message
 
   def initialize(message, headline_output, counts_output, important_log_output, duplicate_logs, duplicate_log_count)
@@ -11,6 +11,11 @@ class LogMailer
     @counts_output = counts_output
     @duplicate_log_count = duplicate_log_count
     @duplicate_logs = duplicate_logs
+  end
+
+  def open_in_vim
+    file_path = create_file.path
+    system("vim #{file_path}")
   end
 
   def send_mail
@@ -30,7 +35,6 @@ class LogMailer
   attr_reader :important_log_output, :counts_output, :duplicate_logs, :duplicate_log_count, :headline_output
 
   def create_file
-    root = "/Users/amcfadden/repos/huckleberry"
     f = File.new("parsed_logs/#{DateTime.now.to_s}_huckleberry_log", "w")
     f.puts(headline_output)
     f.puts(counts_output)

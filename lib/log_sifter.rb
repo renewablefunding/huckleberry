@@ -1,26 +1,31 @@
-require 'english'
-require_relative './prod_log_parse'
-require_relative './log_mailer'
-require_relative './log_duplicate_checker'
 require_relative '../helpers/app_helper'
+require_relative './prod_log_parse'
+require_relative './log_maker'
+require_relative './log_duplicate_checker'
+require_relative './stdout_output_server'
 
 class LogSifter
-  def initialize(logfile, stdout = $stdout)
+  def initialize(logfile:, mode: "email")
     @logfile = logfile
-    @stdout = stdout
+    @mode = mode
   end
 
-  def shell_script
+  def run_script
+    # file_sorter returns false if file type not valid, else it is truthy
     if parsed_logfile = file_sorter
       duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
       duplicate_log_count = duplicate_logs.length
-      email = LogMailer.new(parsed_logfile.message, parsed_logfile.output, parsed_logfile.important_logs, duplicate_logs, duplicate_log_count)
-      email.send_mail
+      output_log = LogMaker.new(message: parsed_logfile.message_body_output, headline_output: parsed_logfile.headline_output, counts_output: parsed_logfile.counts_output, important_log_output: parsed_logfile.important_logs, duplicate_logs: duplicate_logs, duplicate_log_count: duplicate_log_count)
+      send_logfile_to_output(parsed_logfile: parsed_logfile, duplicate_logs: duplicate_logs, duplicate_log_count: duplicate_log_count, output_log: output_log)
+    else
+      send_incorrect_log_type_output
     end
   end
 
   private
-  attr_reader :logfile, :stdout
+  attr_reader :logfile, :mode
+
+# file sorting methods
 
   def file_sorter
     keyword_config = YAML.load_file(File.join(File.dirname(__FILE__) + "/../config/log_keywords.yml"))
@@ -31,37 +36,74 @@ class LogSifter
     process_runner_keywords = keyword_config['process_runner_keywords']
     thin_keywords = keyword_config['thin_keywords']
 
-    filename_array = filename.split(".")[0].split(/[\_\-]/)
-    if !(filename_array & prod_logs_keywords).empty?
+    case
+    when filename_keywords_match_yml_keywords?(prod_logs_keywords)
       log = ProdLogParse.new(File.open(logfile))
-      log.parse_log
-    elsif !(filename_array & new_relic_keywords).empty?
+    when filename_keywords_match_yml_keywords?(new_relic_keywords)
       puts "new relic"
-    elsif !(filename_array & mailer_keywords).empty?
+    when filename_keywords_match_yml_keywords?(mailer_keywords)
       puts "mailer logs"
-    elsif !(filename_array & process_runner_keywords).empty?
+    when filename_keywords_match_yml_keywords?(process_runner_keywords)
       puts "process runner"
-    elsif !(filename_array & thin_keywords).empty?
+    when filename_keywords_match_yml_keywords?(thin_keywords)
       puts "thin"
     else
-      send_incorrect_log_email
       return false
     end
     return log
+  end
+
+  def filename_keywords_match_yml_keywords?(keywords)
+    true unless (keywords_from_filename & keywords).empty?
+  end
+
+  def keywords_from_filename
+    filename.split(".")[0].split(/[\_\-]/)
   end
 
   def filename
     File.basename(logfile)
   end
 
+# send logfile output methods
+
+  def send_logfile_to_output(parsed_logfile: file_sorter, duplicate_logs:, duplicate_log_count:, output_log:)
+    case mode
+    when "email"
+      output_log.send_mail
+    when "mailcatcher"
+      Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
+      output_log.send_mail
+    when "vim"
+      output_log.open_in_vim
+    else
+      puts StdoutOutputServer.usage_output
+    end
+  end
+
+# send incorrect log type output methods
+
+  def send_incorrect_log_type_output
+    puts StdoutOutputServer.incorrect_logfile_output
+    puts StdoutOutputServer.usage_output
+    case mode
+    when "email"
+      send_incorrect_log_email
+    when "mailcatcher"
+      Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
+      send_incorrect_log_email
+    end
+  end
+
+
   def send_incorrect_log_email
-    non_matched_filename = filename
+    message_body = StdoutOutputServer.incorrect_logfile_output
     mailer_config = YAML.load_file(File.join(File.dirname(__FILE__) + "/../config/email_options.yml"))
     Mail.deliver do
-      from        mailer_config['from']
-      to          mailer_config['recipients']
-      subject     mailer_config['subject_log_not_found']
-      body        "An unknown filetype was given to huckleberry. The file name was (#{non_matched_filename}). Please update the log_keywords.yml if you would like this type of file processed in the future!"
+      from        mailer_config.fetch("from"){ nil }
+      to          mailer_config.fetch("recipients"){ nil }
+      subject     mailer_config.fetch("subject_log_not_found"){ nil }
+      body        message_body
     end
   end
 end

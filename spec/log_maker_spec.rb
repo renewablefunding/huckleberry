@@ -9,7 +9,7 @@ RSpec.describe LogMaker do
 
   describe "#send_mail" do
     context "log type is parseable" do
-      subject { LogSifter.new('spec/fixtures/production_test.log') }
+      subject { LogSifter.new(logfile: "spec/fixtures/production_test.log") }
 
       before(:each) do
         Mail::TestMailer.deliveries.clear
@@ -18,11 +18,11 @@ RSpec.describe LogMaker do
 
       it { should have_sent_email }
 
-      it { should have_sent_email.from mailer_config['from'] }
+      it { should have_sent_email.from mailer_config.fetch("from"){ nil } }
 
-      it { should have_sent_email.to mailer_config['recipients'] }
+      it { should have_sent_email.to mailer_config.fetch("recipients"){ nil } }
 
-      it { should have_sent_email.with_subject mailer_config['subject'] }
+      it { should have_sent_email.with_subject mailer_config.fetch("subject"){ nil } }
 
       it "will have a file attached" do
         expect(Mail::TestMailer.deliveries.first.attachments).to_not eq(nil)
@@ -30,11 +30,11 @@ RSpec.describe LogMaker do
     end
 
     context "log type is not parseable" do
-      subject { LogSifter.new('spec/fixtures/test.log') }
+      subject { LogSifter.new(logfile: "spec/fixtures/test.log") }
       it "will have the subject line for subject_log_not_found" do
         Mail::TestMailer.deliveries.clear
         subject.run_script
-        expect(Mail::TestMailer.deliveries.first.subject).to eq(mailer_config['subject_log_not_found'])
+        expect(Mail::TestMailer.deliveries.first.subject).to eq(mailer_config.fetch("subject_log_not_found"){ nil })
       end
     end
   end

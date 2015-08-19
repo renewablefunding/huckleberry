@@ -1,15 +1,15 @@
-require_relative '../lib/log_sifter'
-require_relative '../lib/log_maker'
+require_relative '../lib/huckleberry/log_sifter'
+require_relative '../lib/huckleberry/log_maker'
 require_relative '../helpers/spec_helper'
 
-RSpec.describe LogMaker do
+RSpec.describe Huckleberry::LogMaker do
   include Mail::Matchers
 
-  mailer_config = YAML.load_file(File.join(File.dirname(__FILE__) + "/../config/email_options.yml"))
+  mailer_config = YAML.load_file(File.join(Huckleberry.root, "/config/email_options.yml"))
 
   describe "#send_mail" do
     context "log type is parseable" do
-      subject { LogSifter.new(logfile: "spec/fixtures/production_test.log") }
+      subject { Huckleberry::LogSifter.new(logfile: "spec/fixtures/production_test.log" ) }
 
       before(:each) do
         Mail::TestMailer.deliveries.clear
@@ -20,7 +20,9 @@ RSpec.describe LogMaker do
 
       it { should have_sent_email.from mailer_config.fetch("from"){ nil } }
 
-      it { should have_sent_email.to mailer_config.fetch("recipients"){ nil } }
+      it "will send a message to all recipients" do
+        expect(Mail::TestMailer.deliveries.first.to.join(", ")).to eq(mailer_config.fetch("recipients"))
+      end
 
       it { should have_sent_email.with_subject mailer_config.fetch("subject"){ nil } }
 
@@ -30,7 +32,7 @@ RSpec.describe LogMaker do
     end
 
     context "log type is not parseable" do
-      subject { LogSifter.new(logfile: "spec/fixtures/test.log") }
+      subject { Huckleberry::LogSifter.new(logfile: "spec/fixtures/test.log", stdout: FakeStdout.new) }
       it "will have the subject line for subject_log_not_found" do
         Mail::TestMailer.deliveries.clear
         subject.run_script

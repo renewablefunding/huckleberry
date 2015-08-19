@@ -1,13 +1,14 @@
-class StdoutOutputServer
-  class << self
-    def usage_output
-       <<-OUTPUT
+module Huckleberry
+  class StdoutOutputServer
+    class << self
+      def usage_output
+         <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
               HUCKLEBERRY USAGE
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 TO RUN AS EMAIL:
 
-bin/huckleberry <relative_path_to_log>
+huckleberry <relative_path_to_log>
 
     Will scan the given logfile, and send
     an email with that relevant info.
@@ -16,29 +17,34 @@ bin/huckleberry <relative_path_to_log>
 TO RUN IN TEST EMAIL MODE:
 
 mailcatcher
-bin/huckleberry <relative_path_to_log> mailcatcher
+huckleberry <relative_path_to_log> mailcatcher
 
   navivate to localhost:1080 to see incoming mail.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 TO RUN IN VIM:
 
-bin/huckleberry <relative_path_to_log> vim
+huckleberry <relative_path_to_log> vim
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 TO SEE A LIST OF LOGFILE KEYWORDS:
 
-bin/huckleberry keywords
+huckleberry keywords
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+TO SEE CURRENT EMAIL SETTINGS:
+
+huckleberry email
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
-      OUTPUT
-    end
+        OUTPUT
+      end
 
-    def incorrect_logfile_output
-      <<-OUTPUT
+      def incorrect_logfile_output
+        <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
                HUCKLEBERRY ERROR
 - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,20 +56,32 @@ bin/huckleberry keywords
 
   To see the list of current keywords run:
 
-    bin/huckleberry keywords
+    huckleberry keywords
 
-      OUTPUT
-    end
+        OUTPUT
+      end
 
-    def keywords_output
-      <<-OUTPUT
+      def keywords_output
+        <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
              HUCKLEBERRY KEYWORDS
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#{File.read(File.join(File.dirname(__FILE__) + "/../config/log_keywords.yml"))}
+#{File.read(File.join(Huckleberry.root, "/config/log_keywords.yml"))}
 
-      OUTPUT
+        OUTPUT
+      end
+
+      def email_settings_output
+        <<-OUTPUT
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+           HUCKLEBERRY EMAIL SETTINGS
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#{File.read(File.join(Huckleberry.root, "/config/email_options.yml"))}
+
+        OUTPUT
+      end
     end
   end
 end

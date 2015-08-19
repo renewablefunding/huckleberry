@@ -4,6 +4,4 @@ subject_log_not_found: "Huckleberry | Unknown logfile"
 
 from: "foo@example.com"
 
-# add extra emails with commas between
-
-recipients: "amcfadden@renewfund.com"
+recipients: "amcfadden@renewfund.com, foo@example.com"

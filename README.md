@@ -1,15 +1,27 @@
 ## Huckleberry
 
-A script written in ruby to allow parsing of logs.
+Now a gem! A script written in ruby to allow parsing of logs.
 
 logs > sawmill > sawyer > tom sawyer > huckleberry
+
+Add to Gemfile:
+```
+gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'
+```
+Install/Work on Locally
+```
+git clone https://github.com/projectdx/huckleberry.git
+cd huckleberry
+rake install
+```
+
 
 #### Running
 
 TO RUN AS EMAIL:
 
 ```
-bin/huckleberry <relative_path_to_log>
+huckleberry <relative_path_to_log>
 ```
 
 Will scan the given logfile, and send
@@ -20,7 +32,7 @@ TO RUN IN TEST EMAIL MODE:
 
 ```
 mailcatcher
-bin/huckleberry <relative_path_to_log> mailcatcher
+huckleberry <relative_path_to_log> mailcatcher
 ```
 
 navivate to localhost:1080 to see incoming mail.
@@ -29,14 +41,21 @@ navivate to localhost:1080 to see incoming mail.
 TO RUN IN VIM:
 
 ```
-bin/huckleberry <relative_path_to_log> vim
+huckleberry <relative_path_to_log> vim
 ```
 
 ---
 TO SEE A LIST OF LOGFILE KEYWORDS
 
 ```
-bin/huckleberry keywords
+huckleberry keywords
+```
+
+---
+TO SEE EMAIL SETTINGS
+
+```
+huckleberry email
 ```
 
 ---
@@ -54,4 +73,4 @@ bin/huckleberry keywords
 * ~~log sifter will send the file to the correct log parsing class~~
 * ~~log parsing classes will return to a class that handles output of information to email or console~~
 * ~~yml config file can be used to provide keywords for file naming~~
-* create this as a gem (maybe)
+* ~~create this as a gem (maybe)~~

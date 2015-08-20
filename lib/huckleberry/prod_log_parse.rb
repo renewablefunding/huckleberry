@@ -29,13 +29,13 @@ module Huckleberry
     <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-        #{counts["404"].to_s} 404's found
+              #{counts["404"].to_s} - 404's found
 
-        #{counts["500"].to_s} 500's found
+              #{counts["500"].to_s} - 500's found
 
-        #{counts["error"].to_s} ERROR's found
+              #{counts["error"].to_s} - ERROR's found
 
-        #{counts["fatal"].to_s} FATAL's found
+              #{counts["fatal"].to_s} - FATAL's found
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,8 +54,6 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
 
     private
     attr_reader :log, :counts
-
-
 
     def parse_log
       count_404 = 0

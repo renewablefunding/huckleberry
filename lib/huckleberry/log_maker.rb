@@ -33,7 +33,7 @@ module Huckleberry
     attr_reader :important_log_output, :counts_output, :duplicate_logs, :duplicate_log_count, :headline_output,:message
 
     def create_parsed_logfile
-      f = File.new(File.join(Huckleberry.root, "/parsed_logs/#{DateTime.now.to_s}_huckleberry_log.log"), "w")
+      f = File.new(File.join(Dir.pwd,"/parsed_logs/#{DateTime.now.to_s}_huckleberry_log.log"), "w")
       f.puts(headline_output)
       f.puts(counts_output)
       f.puts(make_logs_look_pretty)

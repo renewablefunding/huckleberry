@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    huckleberry (0.1.0)
+    huckleberry (0.2.0)
       colorize
       mail
       mailcatcher

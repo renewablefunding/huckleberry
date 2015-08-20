@@ -1,10 +1,10 @@
-require_relative '../lib/prod_log_parse'
+require_relative '../lib/huckleberry/prod_log_parse'
 require_relative '../helpers/spec_helper'
 
-RSpec.describe ProdLogParse do
+RSpec.describe Huckleberry::ProdLogParse do
   describe "#parse_log" do
     let(:test_log) {File.open('spec/fixtures/production_test.log')}
-    subject { ProdLogParse.new(test_log) }
+    subject { Huckleberry::ProdLogParse.new(test_log) }
     it "returns a headline_output string" do
       expect(subject.headline_output).to be_kind_of(String)
     end

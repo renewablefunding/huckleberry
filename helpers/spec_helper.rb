@@ -1,11 +1,12 @@
 require 'rspec'
 require 'mail'
 require 'pry'
+require_relative '../lib/huckleberry'
+
 
 RSpec.configure do |c|
   c.before :all do
     Mail.defaults {delivery_method :test}
-    $stdout = FakeStdout.new
   end
 end
 

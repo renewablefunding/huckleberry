@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require 'english'
+require_relative '../lib/huckleberry/log_sifter'
+require_relative '../lib/huckleberry/stdout_output_server'
+
+case ARGV.first
+when nil
+  puts Huckleberry::StdoutOutputServer.usage_output
+when "keywords"
+  puts Huckleberry::StdoutOutputServer.keywords_output
+when "email"
+  puts Huckleberry::StdoutOutputServer.email_settings_output
+else
+  Huckleberry::LogSifter.new(logfile: ARGV.first, mode: ARGV[1] ||= "email").run_script
+end

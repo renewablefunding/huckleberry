@@ -1,5 +1,4 @@
 require_relative '../../helpers/app_helper'
-
 module Huckleberry
   class LogMaker
     def initialize(message: nil, headline_output: nil, counts_output: nil, important_log_output: nil, duplicate_logs: nil, duplicate_log_count: nil)
@@ -37,13 +36,38 @@ module Huckleberry
       f = File.new(File.join(Huckleberry.root, "/parsed_logs/#{DateTime.now.to_s}_huckleberry_log.log"), "w")
       f.puts(headline_output)
       f.puts(counts_output)
-      f.puts(important_log_output)
+      f.puts(make_logs_look_pretty)
       if duplicate_log_count > 0
         f.puts(duplicate_log_count.to_s + " duplicates found")
         f.puts(duplicate_logs)
       end
       f.close
       return f
+    end
+
+
+    def make_logs_look_pretty
+      output = ""
+      important_log_output.each do |pid, process|
+        pid_output =<<-BAR
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+              PROCESS  #{pid}
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+        BAR
+        output += pid_output
+        process.each do |task|
+          task_output =<<-FOO
+#{task.join("\n\n")}
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+
+          FOO
+          output += task_output
+        end
+      end
+      output
     end
   end
 end

@@ -2,7 +2,7 @@
 
 module Huckleberry
   class ProdLogParse
-    attr_reader :important_logs
+    attr_reader :important_logs, :important_processes
     def initialize(log)
       @log = log
       @important_logs = []
@@ -11,7 +11,6 @@ module Huckleberry
       parse_log
       create_important_processes_hash
       store_all_logs_that_are_important_processes
-      binding.pry
     end
 
     def headline_output
@@ -39,6 +38,7 @@ module Huckleberry
         #{counts["fatal"].to_s} FATAL's found
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       OUTPUT
     end
 
@@ -51,8 +51,11 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
       MESSAGE
     end
 
+
     private
-    attr_reader :log, :counts, :important_processes
+    attr_reader :log, :counts
+
+
 
     def parse_log
       count_404 = 0
@@ -63,10 +66,6 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
         raw_line.strip!
         line = raw_line.split(" : ")[1]
         next if line.nil?
-        # next if line =~ (/ 302 /)
-        # next if line =~ (/ 200 /)
-        # next if line =~ (/Rendered/)
-        # next if line =~ (/Param/)
         important_logs << (index.to_s + raw_line) && count_404 += 1 if line =~ (/ 404 /)
         important_logs << (index.to_s + raw_line) && count_500 += 1 if line =~ (/ 500 /)
         important_logs << (index.to_s + raw_line) && count_error += 1 if line =~ (/ERROR/)
@@ -88,38 +87,21 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
 
     def store_all_logs_that_are_important_processes
       log_array = log.readlines
-      last_completed_line = 0
-      last_with_404 = 0
       important_processes.each_key do |pid|
         log_array.each_with_index do |line, index|
           next unless line.include?(pid)
-          line.strip!
-
           if line =~ (/Started/)
-            foo = false
             count = 1
             started_at = index
-            until foo
+            until the_next_instance_of_completed_if_found ||= false
               look_ahead_line = started_at + count
-              if look_ahead_line >= log_array.length || log_array[look_ahead_line].nil?
-                foo = true
-                next
-              end
-              if !log_array[look_ahead_line].include?(pid)
-                # binding.pry
-                count += 1
-                next
-              elsif log_array[look_ahead_line] =~ (/Completed 404/)
-                count += 1
+              if line_includes_an_error(log_array[look_ahead_line])
                 task = log_array.slice(started_at..look_ahead_line)
-                task.select! {|line| line.include?pid}
+                task.select! {|line| line.include?(pid)} #prune out any entries that are not part of this process
                 important_processes[pid] << task
-                puts index
-                foo = true
-              elsif log_array[look_ahead_line] =~ (/Completed/)
-                foo = true
-                count += 1
-                puts index.to_s + "uno"
+                the_next_instance_of_completed_if_found = true
+              elsif line_does_not_include_error(log_array[look_ahead_line])
+                the_next_instance_of_completed_if_found = true
               else
                 count += 1
               end
@@ -128,9 +110,13 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
         end
       end
     end
+
+    def line_includes_an_error(line)
+      true if line =~ (/Completed 404/) || line =~ (/Completed 500/)
+    end
+
+    def line_does_not_include_error(line)
+      true if line =~ (/Completed/)
+    end
   end
 end
-
-
-# hash.has_key?("PID")
-# hash[:PID] = []

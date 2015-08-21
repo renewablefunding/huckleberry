@@ -5,14 +5,24 @@ Now a gem! A script written in ruby to allow parsing of logs.
 logs > sawmill > sawyer > tom sawyer > huckleberry
 
 ---
-### How to install huckleberry locally
+### How to install huckleberry locally for development
 ```
 git clone https://github.com/projectdx/huckleberry.git
 cd huckleberry
 rake install
 ```
 
+### Install huckleberry with bundler
+
+Add to Gemfile: 
+```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'``` 
+
+
 #### Requiring within a project:
+
+Adding to a Gemfile: 
+```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'``` 
+
 ```
 require_relative: "<relative/path/to>/huckleberry/lib/huckleberry"
 ```
@@ -22,10 +32,6 @@ require_relative "../../../huckleberry/lib/huckleberry"
 `
 
 *This way of requiring is fragile, and is on the list of things to fix so that it can be required simply with the gem name.*
-
-
-Adding to a Gemfile: ~~`gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'`~~ *currently not working on my machine, on fix list.*
-
 
 
 

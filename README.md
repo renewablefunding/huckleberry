@@ -1,39 +1,20 @@
-## Huckleberry
+### Huckleberry
 
 Now a gem! A script written in ruby to allow parsing of logs.
 
 logs > sawmill > sawyer > tom sawyer > huckleberry
 
 ---
-### How to install huckleberry locally for development
-```
-git clone https://github.com/projectdx/huckleberry.git
-cd huckleberry
-rake install
-```
 
-### Install huckleberry with bundler
+#### Install huckleberry with bundler
 
 Add to Gemfile: 
+
 ```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'``` 
 
+Requiring within a project:
 
-#### Requiring within a project:
-
-Adding to a Gemfile: 
-```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'``` 
-
-```
-require_relative: "<relative/path/to>/huckleberry/lib/huckleberry"
-```
-ex:
-`
-require_relative "../../../huckleberry/lib/huckleberry"
-`
-
-*This way of requiring is fragile, and is on the list of things to fix so that it can be required simply with the gem name.*
-
-
+```require "huckleberry"```
 
 #### Using within project:
 
@@ -60,7 +41,6 @@ huckleberry <relative_path_to_log>
 Will scan the given logfile, and send
 an email with that relevant info.
 
----
 **TO RUN IN TEST EMAIL MODE:**
 
 ```
@@ -70,21 +50,18 @@ huckleberry <relative_path_to_log> mailcatcher
 
 navivate to localhost:1080 to see incoming mail.
 
----
 **TO RUN IN VIM:**
 
 ```
 huckleberry <relative_path_to_log> vim
 ```
 
----
 **TO SEE A LIST OF LOGFILE KEYWORDS**
 
 ```
 huckleberry keywords
 ```
 
----
 **TO SEE EMAIL SETTINGS**
 
 ```
@@ -93,17 +70,33 @@ huckleberry email
 
 ---
 
+#### How to install huckleberry locally for development
+```
+git clone https://github.com/projectdx/huckleberry.git
+cd huckleberry
+rake install
+```
+---
+
+#### Contributing to Huckleberry
+* Check out the fix and feature list for current items that need attention.
+* submit an issue with fix/feature requests.
+* clone repo, make a branch, and pull request your fix/feature
+
+---
+
 #### Fix List
 * Log parsing currently return duplicates if there is more than one "Started" before a "Completed" is found
-* allow for `require "huckleberry"` rather than `require_relative`
-* make `gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'` work
 
 #### Feature List
-* HIGHEST PRIORITY - determine what information is needed from each logfile.
+* Specs to test the new log parsing that includes related logs
+* **Determine what information is needed from each logfile.**
 * Create parsing for logs other than panda production. Using prod_log_parse as template.
 
 
 #### Done List
+* ~~make `gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'` work~~
+* ~~allow for `require "huckleberry"` rather than `require_relative`~~
 * ~~use yml files to allow for setups~~
 * ~~QA problem - two calls going at exact same time and creates a sql error because it is trying to create the same exact entry twice. Should be looking for two identical calls followed by an error.~~
 * ~~refactor to take out unnecessary files~~

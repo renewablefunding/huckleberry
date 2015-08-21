@@ -18,7 +18,7 @@ module Huckleberry
       if parsed_logfile = file_sorter
         duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
         duplicate_log_count = duplicate_logs.length
-        output_log = LogMaker.new(message: parsed_logfile.message_body_output, headline_output: parsed_logfile.headline_output, counts_output: parsed_logfile.counts_output, important_log_output: parsed_logfile.important_logs, duplicate_logs: duplicate_logs, duplicate_log_count: duplicate_log_count)
+        output_log = LogMaker.new(message: parsed_logfile.message_body_output, headline_output: parsed_logfile.headline_output, counts_output: parsed_logfile.counts_output, important_log_output: parsed_logfile.important_processes, duplicate_logs: duplicate_logs, duplicate_log_count: duplicate_log_count)
         send_logfile_to_output(parsed_logfile: parsed_logfile, duplicate_logs: duplicate_logs, duplicate_log_count: duplicate_log_count, output_log: output_log)
       else
         send_incorrect_log_type_output

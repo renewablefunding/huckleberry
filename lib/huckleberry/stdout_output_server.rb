@@ -4,7 +4,7 @@ module Huckleberry
       def usage_output
          <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-              HUCKLEBERRY USAGE
+              #{"HUCKLEBERRY USAGE".red.bold}
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 TO RUN AS EMAIL:
 
@@ -46,7 +46,7 @@ huckleberry email
       def incorrect_logfile_output
         <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-               HUCKLEBERRY ERROR
+               #{"HUCKLEBERRY ERROR".red.bold}
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   No keywords were found in the logfile name.
@@ -64,7 +64,7 @@ huckleberry email
       def keywords_output
         <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-             HUCKLEBERRY KEYWORDS
+             #{"HUCKLEBERRY KEYWORDS".red.bold}
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #{File.read(File.join(Huckleberry.root, "/config/log_keywords.yml"))}
@@ -75,7 +75,7 @@ huckleberry email
       def email_settings_output
         <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-           HUCKLEBERRY EMAIL SETTINGS
+           #{"HUCKLEBERRY EMAIL SETTINGS".red.bold}
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #{File.read(File.join(Huckleberry.root, "/config/email_options.yml"))}

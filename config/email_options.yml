@@ -2,6 +2,6 @@ subject: "Huckleberry | Logfile report"
 
 subject_log_not_found: "Huckleberry | Unknown logfile"
 
-from: "foo@example.com"
+from: "huckleberry@example.com"
 
-recipients: "amcfadden@renewfund.com, foo@example.com"
+recipients: "amcfadden@renewfinancial.com"

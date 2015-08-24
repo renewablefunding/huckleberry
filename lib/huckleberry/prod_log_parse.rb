@@ -11,6 +11,7 @@ module Huckleberry
       parse_log
       create_important_processes_hash
       store_all_logs_that_are_important_processes
+      make_sure_all_lines_unique
     end
 
     def headline_output
@@ -96,6 +97,7 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
               if line_includes_an_error(log_array[look_ahead_line])
                 task = log_array.slice(started_at..look_ahead_line)
                 task.select! {|line| line.include?(pid)} #prune out any entries that are not part of this process
+                important_processes[pid] << "Task is at line - " + index.to_s
                 important_processes[pid] << task
                 the_next_instance_of_completed_if_found = true
               elsif line_does_not_include_error(log_array[look_ahead_line])
@@ -106,6 +108,12 @@ Huckleberry Log Report for #{DateTime.now.to_s} is attached.
             end
           end
         end
+      end
+    end
+
+    def make_sure_all_lines_unique
+      important_processes.each_key do |pid|
+        important_processes[pid].flatten!.uniq!
       end
     end
 

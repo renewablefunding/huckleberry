@@ -42,7 +42,7 @@ module Huckleberry
       f = File.new(File.join(Dir.pwd,"/parsed_logs/#{DateTime.now.to_s}_huckleberry_log.log"), "w")
       f.puts(headline_output)
       f.puts(counts_output)
-      f.puts(make_logs_look_pretty)
+      f.puts(list_of_parsed_logs)
       if duplicate_log_count > 0
         f.puts(duplicate_log_count.to_s + " duplicates found")
         f.puts(duplicate_logs)
@@ -52,28 +52,26 @@ module Huckleberry
     end
 
 
-    def make_logs_look_pretty
-      output = ""
+    def list_of_parsed_logs
+      list_of_parsed_logs = ""
       important_log_output.each do |pid, process|
-        pid_output =<<-BAR
+        pid_output =<<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - -
               PROCESS  #{pid}
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-        BAR
-        output += pid_output
+
+        OUTPUT
+        list_of_parsed_logs += pid_output
         process.each do |task|
-          task_output =<<-FOO
-#{task.join("\n\n")}
-
-- - - - - - - - - - - - - - - - - - - - - - - - - -
-
-          FOO
-          output += task_output
+          task_output =<<-OUTPUT
+#{task}
+          OUTPUT
+          list_of_parsed_logs += task_output
         end
       end
-      output
+      list_of_parsed_logs
     end
   end
 end

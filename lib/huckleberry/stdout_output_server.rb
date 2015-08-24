@@ -22,11 +22,6 @@ huckleberry <relative_path_to_log> mailcatcher
   navivate to localhost:1080 to see incoming mail.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-TO RUN IN VIM:
-
-huckleberry <relative_path_to_log> vim
-
-- - - - - - - - - - - - - - - - - - - - - - - - - -
 TO SEE A LIST OF LOGFILE KEYWORDS:
 
 huckleberry keywords

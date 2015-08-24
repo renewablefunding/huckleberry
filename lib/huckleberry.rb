@@ -1,4 +1,8 @@
-# require './huckleberry/*.rb'
+require 'pry'
+require 'mail'
+require 'colorize'
+
+Mail.defaults {delivery_method :sendmail}
 
 Dir[File.join(File.expand_path("..",__FILE__), 'huckleberry', '*.rb')].each {|f| require f}
 

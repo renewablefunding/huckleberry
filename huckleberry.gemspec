@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
-  spec.files         = Dir.glob("{bin,lib,helpers,config}/**/*")
+  spec.files         = Dir.glob("{bin,lib,helpers,config,exe}/**/*")
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]

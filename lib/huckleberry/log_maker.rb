@@ -1,13 +1,14 @@
 require_relative '../../helpers/app_helper'
 module Huckleberry
   class LogMaker
-    def initialize(message: nil, headline_output: nil, counts_output: nil, important_log_output: nil, duplicate_logs: nil, duplicate_log_count: nil)
+    def initialize(message: nil, headline_output: nil, counts_output: nil, important_log_output: nil, duplicate_logs: nil, duplicate_log_count: nil, to_email: nil)
       @message = message
       @important_log_output = important_log_output
       @headline_output = headline_output
       @counts_output = counts_output
       @duplicate_log_count = duplicate_log_count
       @duplicate_logs = duplicate_logs
+      @to_email = to_email
     end
 
     def open_in_vim
@@ -19,9 +20,14 @@ module Huckleberry
       mailer_config = YAML.load_file(File.join(Huckleberry.root ,"/config/email_options.yml"))
       message = @message.strip
       file = create_parsed_logfile
+      recipient_email = to_email
       Mail.deliver do
         from        mailer_config.fetch("from"){ nil }
-        to          mailer_config.fetch("recipients"){ nil }
+        if recipient_email.nil?
+          to          mailer_config.fetch("recipients"){ nil }
+        else
+          to          recipient_email
+        end
         subject     mailer_config.fetch("subject"){ nil }
         body        message
         add_file    file.path
@@ -30,7 +36,7 @@ module Huckleberry
 
     private
 
-    attr_reader :important_log_output, :counts_output, :duplicate_logs, :duplicate_log_count, :headline_output,:message
+    attr_reader :important_log_output, :counts_output, :duplicate_logs, :duplicate_log_count, :headline_output, :message, :to_email
 
     def create_parsed_logfile
       f = File.new(File.join(Dir.pwd,"/parsed_logs/#{DateTime.now.to_s}_huckleberry_log.log"), "w")

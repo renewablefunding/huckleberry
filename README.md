@@ -8,9 +8,9 @@ logs > sawmill > sawyer > tom sawyer > huckleberry
 
 #### Install huckleberry with bundler
 
-Add to Gemfile: 
+Add to Gemfile:
 
-```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'``` 
+```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'```
 
 Requiring within a project:
 
@@ -68,6 +68,12 @@ huckleberry keywords
 huckleberry email
 ```
 
+**TO SET RECIPIENT EMAIL**
+
+```
+huckleberry <relative_path_to_log> email <desired_recipient_email>
+```
+
 ---
 
 #### How to install huckleberry locally for development
@@ -105,7 +111,3 @@ rake install
 * ~~log parsing classes will return to a class that handles output of information to email or console~~
 * ~~yml config file can be used to provide keywords for file naming~~
 * ~~create this as a gem (maybe)~~
-
-
-
-

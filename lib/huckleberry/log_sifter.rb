@@ -24,7 +24,6 @@ module Huckleberry
 
     def file_sorter
       keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
-
       prod_logs_keywords = keyword_config['production_keywords']
       # new_relic_keywords = keyword_config['new_relic_keywords']
       # mailer_keywords = keyword_config['mailer_keywords']

@@ -50,6 +50,7 @@ module Huckleberry
             <button><a href='#report_of_404s' id="404-button" style='color: brown'>404 Status Code</a></button>
             <button><a href='#other_400s_report' style='color: orange'>400-417(excluding 404) Status Code</a></button>
             <button><a href='#report_of_500s' style='color: blue'>500-505 Status Code</a></button>
+            #{"<button><a href='#duplicate_logs'>Duplicate Logs</a></button>" unless duplicate_logs.empty?}
             <span style="color:red; background-color: white;">FATAL</span>
             <span style="color:purple; background-color: white;">ERROR</span>
           </div>
@@ -77,6 +78,10 @@ module Huckleberry
         else
           formatted_message << "<li>#{line}</li>"
         end
+      end
+      unless duplicate_logs.empty?
+        formatted_message << "</ul><a name='duplicate_logs' class='anchor'></a><h2>Duplicate Logs</h2><hr><ul>"
+        formatted_message << duplicate_logs.join("\n\n")
       end
       formatted_message << "</ul><a name='report_of_404s' class='anchor'></a><h2>404 Report</h2><hr><ul>"
       formatted_message << report_of_404s

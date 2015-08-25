@@ -32,6 +32,11 @@ TO SEE CURRENT EMAIL SETTINGS:
 huckleberry email
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
+TO SET RECIPIENT EMAIL:
+
+huckleberry <relative_path_to_log> email <desired_recipient_email>
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
@@ -74,6 +79,13 @@ huckleberry email
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #{File.read(File.join(Huckleberry.root, "/config/email_options.yml"))}
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+TO SET RECIPIENT EMAIL WITHOUT EDITING YML:
+
+huckleberry <relative_path_to_log> email <desired_recipient_email>
+
 
         OUTPUT
       end

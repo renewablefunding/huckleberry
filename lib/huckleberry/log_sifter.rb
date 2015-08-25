@@ -1,9 +1,10 @@
 module Huckleberry
   class LogSifter
-    def initialize(logfile:, mode: "email", stdout: $stdout)
+    def initialize(logfile:, mode: "email", to_email: nil, stdout: $stdout)
       @logfile = logfile
       @mode = mode
       @stdout = stdout
+      @to_email = to_email
     end
 
     def run_script
@@ -18,7 +19,7 @@ module Huckleberry
     end
 
     private
-    attr_reader :logfile, :mode, :stdout
+    attr_reader :logfile, :mode, :stdout, :to_email
 
   # file sorting methods
 

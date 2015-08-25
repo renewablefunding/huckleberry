@@ -6,7 +6,7 @@ RSpec.describe Huckleberry::LogSifter do
     subject { Huckleberry::LogSifter.new(logfile: "spec/fixtures/production_test.log") }
     it "sorts this logfile to ProdLogParse class" do
       subject.send(:file_sorter)
-      expect(subject.send(:file_sorter)).to be_kind_of(Huckleberry::ProdLogParse)
+      expect(subject.send(:file_sorter)).to be_kind_of(Array)
     end
   end
 end

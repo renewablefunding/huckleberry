@@ -1,8 +1,8 @@
 require_relative '../lib/huckleberry/log_sifter'
-require_relative '../lib/huckleberry/log_maker'
+require_relative '../lib/huckleberry/log_mailer'
 require_relative '../helpers/spec_helper'
 
-RSpec.describe Huckleberry::LogMaker do
+RSpec.describe Huckleberry::LogMailer do
   include Mail::Matchers
 
   mailer_config = YAML.load_file(File.join(Huckleberry.root, "/config/email_options.yml"))

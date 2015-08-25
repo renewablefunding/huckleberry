@@ -13,9 +13,10 @@ module Huckleberry
       duplicate_line_array = []
       previous_log_entry = nil
       File.open(logfile) do |f|
-        f.each_line do |line|
+        f.each_line.each_with_index do |line, index|
           next if line.chomp! == ""
           if previous_log_entry == line
+            duplicate_line_array << index.to_s
             duplicate_line_array << line
           end
           previous_log_entry = line

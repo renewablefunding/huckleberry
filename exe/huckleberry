@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'english'
-require_relative '../lib/huckleberry/log_sifter'
-require_relative '../lib/huckleberry/stdout_output_server'
+require_relative '../lib/huckleberry'
 
 case ARGV.first
 when nil

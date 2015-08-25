@@ -2,8 +2,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-alias huckleberry="exe/huckleberry"
-alias huck="exe/huckleberry"
 bundle install
 
 

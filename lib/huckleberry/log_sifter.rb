@@ -1,33 +1,37 @@
 module Huckleberry
   class LogSifter
-    def initialize(logfile:, mode: "email", to_email: nil, stdout: $stdout)
+    def initialize(logfile:, mode: "email", stdout: $stdout)
       @logfile = logfile
       @mode = mode
       @stdout = stdout
-      @to_email = to_email
     end
 
-    def run_script
-      # file_sorter returns false if file type not valid, else it is truthy
-      if parsed_logfile = file_sorter
-        duplicate_logs = LogDuplicateChecker.new(logfile).duplicate_check
-        output_log = LogMailer.new(message: parsed_logfile, duplicate_logs: duplicate_logs)
-        send_logfile_to_output(parsed_logfile: parsed_logfile, duplicate_logs: duplicate_logs, output_log: output_log)
-      else
-        send_incorrect_log_type_output
+    def carry_log_through_process
+      if check_for_correct_filetype_send_incorrect_message
+        send_logfile_to_output(message: html_formatted_message)
       end
     end
 
     private
-    attr_reader :logfile, :mode, :stdout, :to_email
+    attr_reader :logfile, :mode, :stdout
 
-  # file sorting methods
+    def check_for_correct_filetype_send_incorrect_message
+      keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
+      keyword_config.each_key do |key|
+        if filename_keywords_match_yml_keywords?(keyword_config[key])
+          return true
+        else
+          send_incorrect_log_type_output
+          return false
+        end
+      end
+    end
 
-    def file_sorter
+    def sort_parse_and_return_raw_message
       log = false
       keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
       keyword_config.each_key do |key|
-        log = SimpleParse.new(File.open(logfile)).simple_parse_log if filename_keywords_match_yml_keywords?(keyword_config[key])
+        log = LogParser.new(File.open(logfile)).simple_parse_log(log_type: keyword_config[key]) if filename_keywords_match_yml_keywords?(keyword_config[key])
       end
       return log
     end
@@ -44,43 +48,41 @@ module Huckleberry
       File.basename(logfile)
     end
 
-  # send logfile output methods
+    def html_formatted_message
+      HtmlFormatter.html_formatted_message(raw_message: sort_parse_and_return_raw_message, duplicate_logs: duplicate_logs, original_logfile_name: filename)
+    end
 
-    def send_logfile_to_output(parsed_logfile: file_sorter, duplicate_logs:, output_log:)
+    def duplicate_logs
+      LogDuplicateChecker.new(logfile).duplicate_check
+    end
+
+    def send_logfile_to_output(message: )
       case mode
       when "email"
-        output_log.send_mail
+        LogMailer.send_mail(message: message, html_tmp_file: HtmlFormatter.create_html_file(message))
+        stdout.puts "Hucklebery sent a file to email"
       when "mailcatcher"
         Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
-        output_log.send_mail
+        LogMailer.send_mail(message: message)
+        stdout.puts "Hucklebery sent a file to mailcatcher"
+      when "launchy"
+        html_file = HtmlFormatter.create_html_file(message)
+        Launchy.open(html_file.path)
+        stdout.puts "Hucklebery opened a window with launchy"
       else
         stdout.puts StdoutOutputServer.usage_output
       end
     end
-
-  # send incorrect log type output methods
 
     def send_incorrect_log_type_output
       stdout.puts StdoutOutputServer.incorrect_logfile_output
       stdout.puts StdoutOutputServer.usage_output
       case mode
       when "email"
-        send_incorrect_log_email
+        LogMailer.send_incorrect_log_email
       when "mailcatcher"
         Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
-        send_incorrect_log_email
-      end
-    end
-
-
-    def send_incorrect_log_email
-      message_body = StdoutOutputServer.incorrect_logfile_output
-      mailer_config = YAML.load_file(File.join(Huckleberry.root, "/config/email_options.yml"))
-      Mail.deliver do
-        from        mailer_config.fetch("from"){ nil }
-        to          mailer_config.fetch("recipients"){ nil }
-        subject     mailer_config.fetch("subject_log_not_found"){ nil }
-        body        message_body
+        LogMailer.send_incorrect_log_email
       end
     end
   end

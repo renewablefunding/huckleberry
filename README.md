@@ -20,7 +20,7 @@ Requiring within a project:
 
 Calling the main method to parse logs:
 ```
-Huckleberry::LogSifter.new(logfile: <relative_path_to_logfile>, mode: <default: "email" | "mailcatcher" | "vim">).run_script
+Huckleberry::LogSifter.new(logfile: <relative_path_to_logfile>, mode: <default: "email" | "mailcatcher" | "vim">).carry_log_through_process
 ```
 
 ex:`Huckleberry::LogSifter.new(logfile: logfile_location, mode: "vim").run_script`
@@ -50,11 +50,15 @@ huckleberry <relative_path_to_log> mailcatcher
 
 navivate to localhost:1080 to see incoming mail.
 
-**TO RUN IN VIM:**
+---
+**TO RUN AND OPEN WITH LAUNCHY:**
 
 ```
-huckleberry <relative_path_to_log> vim
+huckleberry <relative_path_to_log> launchy
 ```
+
+  A window will pop up with parsed file.
+
 
 **TO SEE A LIST OF LOGFILE KEYWORDS**
 
@@ -92,15 +96,14 @@ rake install
 ---
 
 #### Fix List
-* Log parsing currently return duplicates if there is more than one "Started" before a "Completed" is found
 
 #### Feature List
-* Specs to test the new log parsing that includes related logs
-* **Determine what information is needed from each logfile.**
 * Create parsing for logs other than panda production. Using prod_log_parse as template.
 
 
 #### Done List
+* ~~Determine what information is needed from each logfile.~~
+* ~~Log parsing currently return duplicates if there is more than one "Started" before a "Completed" is found~~
 * ~~make `gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'` work~~
 * ~~allow for `require "huckleberry"` rather than `require_relative`~~
 * ~~use yml files to allow for setups~~

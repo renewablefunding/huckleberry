@@ -1,12 +1,22 @@
 module Huckleberry
-  class SimpleParse
+  class LogParser
     def initialize(logfile)
       @logfile = logfile
       @message = []
     end
 
-    def simple_parse_log
-      number_of_interesting_lines = 0
+    def simple_parse_log(log_type: )
+      keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
+      if log_type == keyword_config["production_keywords"]
+        production_log_parse
+      end
+    end
+
+    private
+    attr_reader :logfile
+    attr_accessor :message
+
+    def production_log_parse
       File.open(logfile).each_line.each_with_index do |line, index|
         line.strip!
         next if line == ""
@@ -35,14 +45,9 @@ module Huckleberry
         next if line =~ /AWS (S3|STS) (200|204)/
         next if line =~ /\[AIRBRAKE\] Success/i
 
-        number_of_interesting_lines += 1
         message << index.to_s + "  -  " + line
       end
-      message << number_of_interesting_lines.to_s
+      message
     end
-
-    private
-    attr_reader :logfile
-    attr_accessor :message
   end
 end

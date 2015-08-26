@@ -10,5 +10,5 @@ when "keywords"
 when "email"
   puts Huckleberry::StdoutOutputServer.email_settings_output
 else
-  Huckleberry::LogSifter.new(logfile: ARGV.first, mode: ARGV[1] ||= "email", to_email: ARGV[2]).run_script
+  Huckleberry::LogSifter.new(logfile: ARGV.first, mode: ARGV[1] ||= "email").carry_log_through_process
 end

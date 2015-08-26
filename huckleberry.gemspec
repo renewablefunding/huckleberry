@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "mail"
   spec.add_runtime_dependency "mailcatcher"
-  spec.add_runtime_dependency "colorize"
+  spec.add_runtime_dependency "launchy"
 end

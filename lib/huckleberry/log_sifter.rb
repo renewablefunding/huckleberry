@@ -24,26 +24,10 @@ module Huckleberry
   # file sorting methods
 
     def file_sorter
+      log = false
       keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
-      prod_logs_keywords = keyword_config['production_keywords']
-      # new_relic_keywords = keyword_config['new_relic_keywords']
-      # mailer_keywords = keyword_config['mailer_keywords']
-      # process_runner_keywords = keyword_config['process_runner_keywords']
-      # thin_keywords = keyword_config['thin_keywords']
-
-      case
-      when filename_keywords_match_yml_keywords?(prod_logs_keywords)
-        log = SimpleParse.new(File.open(logfile)).simple_parse_log
-      # when filename_keywords_match_yml_keywords?(new_relic_keywords)
-      #   stdout.puts "new relic"
-      # when filename_keywords_match_yml_keywords?(mailer_keywords)
-      #   stdout.puts "mailer logs"
-      # when filename_keywords_match_yml_keywords?(process_runner_keywords)
-      #   stdout.puts "process runner"
-      # when filename_keywords_match_yml_keywords?(thin_keywords)
-      #   stdout.puts "thin"
-      else
-        return false
+      keyword_config.each_key do |key|
+        log = SimpleParse.new(File.open(logfile)).simple_parse_log if filename_keywords_match_yml_keywords?(keyword_config[key])
       end
       return log
     end

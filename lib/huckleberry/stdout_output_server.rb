@@ -48,7 +48,6 @@ huckleberry <relative_path_to_log> email <desired_recipient_email>
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-
         OUTPUT
       end
 
@@ -67,6 +66,7 @@ huckleberry <relative_path_to_log> email <desired_recipient_email>
 
     huckleberry keywords
 
+
         OUTPUT
       end
 
@@ -77,6 +77,7 @@ huckleberry <relative_path_to_log> email <desired_recipient_email>
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #{File.read(File.join(Huckleberry.root, "/config/log_keywords.yml"))}
+
 
         OUTPUT
       end

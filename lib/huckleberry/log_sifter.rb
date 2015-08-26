@@ -48,7 +48,8 @@ module Huckleberry
     end
 
     def html_formatted_message
-      HtmlFormatter.html_formatted_message(raw_message: sort_parse_and_return_raw_message, duplicate_logs: duplicate_logs, original_logfile_name: filename)
+      new_html_object = HtmlFormatter.new(raw_message: sort_parse_and_return_raw_message, duplicate_logs: duplicate_logs, original_logfile_name: filename)
+      new_html_object.html_formatted_message
     end
 
     def duplicate_logs

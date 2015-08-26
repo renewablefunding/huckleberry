@@ -20,10 +20,10 @@ Requiring within a project:
 
 Calling the main method to parse logs:
 ```
-Huckleberry::LogSifter.new(logfile: <relative_path_to_logfile>, mode: <default: "email" | "mailcatcher" | "vim">).carry_log_through_process
+Huckleberry::LogSifter.new(logfile: <relative_path_to_logfile>, mode: <default: "email" | "mailcatcher" | "launchy">).carry_log_through_process
 ```
 
-ex:`Huckleberry::LogSifter.new(logfile: logfile_location, mode: "vim").run_script`
+ex:`Huckleberry::LogSifter.new(logfile: logfile_location, mode: "launchy").carry_log_through_process`
 
 ---
 

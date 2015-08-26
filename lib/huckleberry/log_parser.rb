@@ -111,7 +111,6 @@ module Huckleberry
         next if line =~ /\* complete!/
         next if line =~ //
 
-
         message << index.to_s + "  -  " + line
       end
       message
@@ -130,8 +129,6 @@ module Huckleberry
         next if line =~ /DEBUG -- (request:|response:)/
         next if line =~ /INFO -- : post http/
         next if line =~ /date:.*\"/
-
-
 
         message << index.to_s + "  -  " + line
       end

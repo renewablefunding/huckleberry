@@ -59,11 +59,11 @@ module Huckleberry
     def send_logfile_to_output(message: )
       case mode
       when "email"
-        LogMailer.send_mail(message: message, html_tmp_file: HtmlFormatter.create_html_file(message))
+        LogMailer.send_mail(message: message, html_file: HtmlFormatter.create_html_file(message))
         stdout.puts "Hucklebery sent a file to email"
       when "mailcatcher"
         Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
-        LogMailer.send_mail(message: message)
+        LogMailer.send_mail(message: message, html_file: HtmlFormatter.create_html_file(message))
         stdout.puts "Hucklebery sent a file to mailcatcher"
       when "launchy"
         html_file = HtmlFormatter.create_html_file(message)

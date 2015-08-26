@@ -1,7 +1,7 @@
 module Huckleberry
   class LogMailer
     class << self
-      def send_mail(message: ,html_tmp_file: )
+      def send_mail(message: ,html_file: )
         mailer_config = YAML.load_file(File.join(Huckleberry.root ,"/config/email_options.yml"))
         mail_message = message
         Mail.deliver do
@@ -12,7 +12,7 @@ module Huckleberry
             content_type 'text/html; charset=UTF-8'
             body mail_message
           end
-          add_file html_tmp_file.path
+          add_file html_file.path
         end
       end
 

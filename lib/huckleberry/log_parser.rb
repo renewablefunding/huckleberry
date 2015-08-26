@@ -7,8 +7,17 @@ module Huckleberry
 
     def simple_parse_log(log_type: )
       keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
-      if log_type == keyword_config["production_keywords"]
+      case log_type
+      when keyword_config["production_keywords"]
         production_log_parse
+      when keyword_config["mailer_keywords"]
+        mailer_log_parse
+      when keyword_config["new_relic_keywords"]
+        new_relic_log_parse
+      when keyword_config["process_runner_keywords"]
+        process_runner_log_parse
+      when keyword_config["thin_keywords"]
+        thin_log_parse
       end
     end
 
@@ -44,6 +53,85 @@ module Huckleberry
         next if line =~ /sequel_reconnector/
         next if line =~ /AWS (S3|STS) (200|204)/
         next if line =~ /\[AIRBRAKE\] Success/i
+
+        message << index.to_s + "  -  " + line
+      end
+      message
+    end
+
+    def mailer_log_parse
+      File.open(logfile).each_line.each_with_index do |line, index|
+        line.strip!
+        next if line == ""
+        next if line =~ /\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}/
+        next if line =~ /Date: .*\+\d{4}/
+        next if line =~ /(From:|To:) .*@/
+        next if line =~ /Subject: .*/
+        next if line =~ /Mime-Version:/
+        next if line =~ /Content-Type:/
+        next if line =~ /charset\=/
+        next if line =~ /Message-ID: \<.*\>/
+        next if line =~ /Content-Transfer-Encoding:/
+        next if line =~ /View the application here/
+        next if line =~ /.*==_mimepart_.*/
+        next if line =~ /\(.*resend_email\)/
+
+        message << index.to_s + "  -  " + line
+      end
+      message
+    end
+
+    def new_relic_log_parse
+      File.open(logfile).each_line.each_with_index do |line, index|
+        line.strip!
+        next if line == ""
+        next if line =~ /Starting the New Relic agent/
+        next if line =~ /To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false/
+        next if line =~ /Reading configuration from config\/newrelic.yml/
+        next if line =~ /Environment: \w*$/
+        next if line =~ /Application: \w*$/
+        next if line =~ /No known dispatcher detected./
+        next if line =~ /(Installing|Finished).*instrumentation$/
+        next if line =~ /Reporting to: http/
+        next if line =~ /Starting Agent shutdown/
+        next if line =~ /Dispatcher: thin/
+        next if line =~ /Doing deferred dependency-detection before Rack startup/
+
+        message << index.to_s + "  -  " + line
+      end
+      message
+    end
+
+    def process_runner_log_parse
+      File.open(logfile).each_line.each_with_index do |line, index|
+        line.strip!
+        next if line == ""
+        next if line =~ /Launched process/
+        next if line =~ /Completing task.*no params needed/
+        next if line =~ /\* complete!/
+        next if line =~ //
+
+
+        message << index.to_s + "  -  " + line
+      end
+      message
+    end
+
+    def thin_log_parse
+      File.open(logfile).each_line.each_with_index do |line, index|
+        line.strip!
+        next if line == ""
+        next if line =~ /Status: 200/
+        next if line =~ /Api-(Token|Version):/
+        next if line =~ /Content-Type:/i
+        next if line =~ /transfer-encoding:/
+        next if line =~ /connection:/
+        next if line =~ /x-newrelic-app-data:/
+        next if line =~ /DEBUG -- (request:|response:)/
+        next if line =~ /INFO -- : post http/
+        next if line =~ /date:.*\"/
+
+
 
         message << index.to_s + "  -  " + line
       end

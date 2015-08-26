@@ -20,11 +20,10 @@ module Huckleberry
       keyword_config.each_key do |key|
         if filename_keywords_match_yml_keywords?(keyword_config[key])
           return true
-        else
-          send_incorrect_log_type_output
-          return false
         end
       end
+      send_incorrect_log_type_output
+      return false
     end
 
     def sort_parse_and_return_raw_message

@@ -9,15 +9,15 @@ module Huckleberry
           <body>
             <style>
               .anchor{
-              display: block;
-              height: 100;
-              margin-top: -100;
-              visibility: hidden;
+                display: block;
+                height: 100;
+                margin-top: -100;
+                visibility: hidden;
               }
               .header{
                 position: fixed;
                 top: 0;
-                background-color: purple;
+                background-color: indigo;
                 width: 100%;
                 text-align: center;
               }
@@ -26,22 +26,65 @@ module Huckleberry
               }
               .right{
                 float: right;
+                text-align: center;
                 width: 50%;
               }
               .left{
                 float: left;
+                text-align: center;
                 width: 50%;
               }
+              .entries-of-404{
+                color: brown;
+              }
+              .entries-of-400s{
+                color: DarkOrange;
+              }
+              .entries-of-500s{
+                color: blue;
+              }
+              .entries-of-fatal{
+                color: red;
+              }
+              .entries-of-error{
+                color: indigo;
+              }
             </style>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+            <script>
+            $(function() {
+              $("#button-404").click(function() {
+                $(".entries-of-404").toggle();
+              });
+              $("#button-400s").click(function() {
+                $(".entries-of-400s").toggle();
+              });
+              $("#button-500s").click(function() {
+                $(".entries-of-500s").toggle();
+              });
+              $("#button-non-tracked").click(function() {
+                $(".entries-non-tracked").toggle();
+              });
+              $("#button-fatal").click(function() {
+                $(".entries-of-fatal").toggle();
+              });
+              $("#button-error").click(function() {
+                $(".entries-of-error").toggle();
+              });
+            });
+            </script>
+
             <div class="header">
             <h1 class="header-headline-text">Huckleberry</h1>
-              <button><a href='#return_to_top' style='color: green'>Return to Top</a></button>
-              <button><a href='#report_of_404s' id="404-button" style='color: brown'>404 Status Code</a></button>
-              <button><a href='#other_400s_report' style='color: orange'>400-417(excluding 404) Status Code</a></button>
-              <button><a href='#report_of_500s' style='color: blue'>500-505 Status Code</a></button>
+              <button><a style='color: green'>Return to Top</a></button>
+              <button id="button-404" style='color: brown'>Show/Hide 404 Status Code</button>
+              <button id="button-400s" style='color: DarkOrange'>Show/Hide 400-417(excluding 404) Status Code</button>
+              <button id="button-500s" style='color: blue'>Show/Hide 500-505 Status Code</button>
+              <button id="button-fatal" style='color: red'>Show/Hide FATAL</button>
+              <button id="button-error" style='color: indigo'>Show/Hide ERROR</button>
+              <button id="button-non-tracked">Show/Hide Untracked logs</button>
               #{"<button><a href='#duplicate_logs'>Duplicate Logs</a></button>" unless duplicate_logs.empty?}
-              <span style="color:red; background-color: white;">FATAL</span>
-              <span style="color:purple; background-color: white;">ERROR</span>
             </div>
             <div style='margin-top: 100px'>
             <a name="return_to_top" class='anchor'></a>
@@ -54,39 +97,34 @@ module Huckleberry
               <p>EX: 9931 - E, [2015-08-07T14:00:30.029282 #22753] ERROR -- : 400:</p>
             </div>
             <hr>
-            <h2>FATAL/ERROR and unknown entries</h2>
-            <hr>
             <ul>
             <!-- logs inserted here -->
         HTML
         report_of_404s = ""
         other_400s_report = ""
         report_of_500s = ""
+        if raw_message.empty?
+          formatted_message << "<h2 style='text-align:center; width:100%; color:indigo;'>No abnormal logs have been found!</h2>"
+        end
         raw_message.each do |line|
           if line =~ / 404 /
-            report_of_404s << "<li class='404-entries' style='color: brown'>#{line}</li>"
+            formatted_message << "<li class='entries-of-404'>#{line}</li>"
           elsif line =~ / (4(0|1)[0-7]) /
-            other_400s_report << "<li style='color: orange'>#{line}</li>"
-          elsif line =~ / (50[0-5]) /
-            report_of_500s << "<li style='color: blue'>#{line}</li>"
+            formatted_message << "<li class='entries-of-400s'>#{line}</li>"
+          elsif line =~ /( (50[0-5]) |\(50[0-5]\))/
+            formatted_message << "<li class='entries-of-500s'>#{line}</li>"
           elsif line =~ /FATAL/
-            formatted_message << "<li style='color: red'>#{line}</li>"
+            formatted_message << "<li class='entries-of-fatal'>#{line}</li>"
           elsif line =~ /ERROR/
-            formatted_message << "<li style='color: purple'>#{line}</li>"
+            formatted_message << "<li class='entries-of-error'>#{line}</li>"
           else
-            formatted_message << "<li>#{line}</li>"
+            formatted_message << "<li class='entries-non-tracked'>#{line}</li>"
           end
         end
         unless duplicate_logs.empty?
-          formatted_message << "</ul><a name='duplicate_logs' class='anchor'></a><h2>Duplicate Logs</h2><hr><ul>"
+          formatted_message << "</ul><h2>Duplicate Logs</h2><hr><ul>"
           formatted_message << duplicate_logs.join("\n\n")
         end
-        formatted_message << "</ul><a name='report_of_404s' class='anchor'></a><h2>404 Report</h2><hr><ul>"
-        formatted_message << report_of_404s
-        formatted_message << "</ul><a name='other_400s_report' class='anchor'></a><h2>Other 400s Report</h2><hr><ul>"
-        formatted_message << other_400s_report
-        formatted_message << "</ul><a name='report_of_500s' class='anchor'></a><h2>500s Report</h2><hr><ul>"
-        formatted_message << report_of_500s
         formatted_message << "</ul></div></body></html>"
       end
 

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Huckleberry</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <style>
+      .anchor{
+        display: block;
+        height: 100;
+        margin-top: -100;
+        visibility: hidden;
+      }
+      .header{
+        position: fixed;
+        top: 0;
+        background-color: indigo;
+        width: 100%;
+        text-align: center;
+      }
+      .header-headline-text{
+        color: white;
+      }
+      .right{
+        float: right;
+        text-align: center;
+        width: 50%;
+      }
+      .left{
+        float: left;
+        text-align: center;
+        width: 50%;
+      }
+      .entries-of-404{
+        color: brown;
+      }
+      .entries-of-400s{
+        color: DarkOrange;
+      }
+      .entries-of-500s{
+        color: blue;
+      }
+      .entries-of-fatal{
+        color: red;
+      }
+      .entries-of-error{
+        color: indigo;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+    <h1 class="header-headline-text">Huckleberry</h1>
+      <button><a style='color: green'>Return to Top</a></button>
+      <button id="button-404" style='color: brown'>Show/Hide 404 Status Code</button>
+      <button id="button-400s" style='color: DarkOrange'>Show/Hide 400-417(excluding 404) Status Code</button>
+      <button id="button-500s" style='color: blue'>Show/Hide 500-505 Status Code</button>
+      <button id="button-fatal" style='color: red'>Show/Hide FATAL</button>
+      <button id="button-error" style='color: indigo'>Show/Hide ERROR</button>
+      <button id="button-non-tracked">Show/Hide Untracked logs</button>
+    </div>
+    <div style='margin-top: 100px'>
+      <a name="return_to_top" class='anchor'></a>
+      <div class="left">
+        <h4>This logfile is #{original_logfile_name}</h4>
+        <p>This report was made at: #{DateTime.now.to_s}</p>
+      </div>
+      <div class="right">
+        <h4>KEY: [index in log in original file] - [log entry]</h4>
+        <p>EX: 9931 - E, [2015-08-07T14:00:30.029282 #22753] ERROR -- : 400:</p>
+      </div>
+      <hr>
+      <ul>
+        <% unless @duplicate_logs.empty? %>
+          <h2>Duplicate log entries found:</h2>
+          <% @duplicate_logs.each do |log| %>
+            <%= log %>
+          <% end %>
+        <% end %>
+        <% if @raw_message.empty? %>
+          <h2 class="center">No abnormal logs have been found!</h2>
+        <% else %>
+          <% @raw_message.each do |log| %>
+            <%= log %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </body>
+  <footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+    $(function() {
+      $("#button-404").click(function() {
+        $(".entries-of-404").toggle();
+      });
+      $("#button-400s").click(function() {
+        $(".entries-of-400s").toggle();
+      });
+      $("#button-500s").click(function() {
+        $(".entries-of-500s").toggle();
+      });
+      $("#button-non-tracked").click(function() {
+        $(".entries-non-tracked").toggle();
+      });
+      $("#button-fatal").click(function() {
+        $(".entries-of-fatal").toggle();
+      });
+      $("#button-error").click(function() {
+        $(".entries-of-error").toggle();
+      });
+    });
+    </script>
+  </footer>
+</html>

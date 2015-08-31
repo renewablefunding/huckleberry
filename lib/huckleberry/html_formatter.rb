@@ -1,3 +1,4 @@
+require 'erb'
 require 'fileutils'
 
 module Huckleberry
@@ -7,6 +8,13 @@ module Huckleberry
       @duplicate_logs = duplicate_logs
       @original_logfile_name = original_logfile_name
       @formatted_message = ""
+      @erb = nil
+      read_and_fill_erb
+    end
+
+    def read_and_fill_erb
+      erb = ERB.new(File.read(File.join(Dir.pwd, "helpers", "output_template.erb")))
+      @erb = erb.result(binding)
     end
 
     def html_formatted_message
@@ -22,8 +30,8 @@ module Huckleberry
 
     def self.create_html_file(message_as_html)
       FileUtils.mkdir_p 'parsed_logs'
-      f = File.new(File.join(Dir.pwd,"/parsed_logs/#{DateTime.now.to_s}_huckleberry_log.html"), "w")
-      f.puts(message_as_html)
+      f = File.new(File.join(Dir.pwd,"parsed_logs", "#{DateTime.now.to_s}_huckleberry_log.html"), "w")
+      f.write(@erb)
       f.close
       return f
     end
@@ -39,6 +47,7 @@ module Huckleberry
         <body>
       HTML
     end
+
 
     def generate_css_and_add_to_html
       formatted_message << <<-HTML
@@ -155,9 +164,9 @@ module Huckleberry
       raw_message.each do |line|
         if line =~ / 404 /
           formatted_message << "<li class='entries-of-404'>#{line}</li>"
-        elsif line =~ / (4(0|1)[0-7]) /
+        elsif line =~  /( (4[0-9][0-9]) |\(4[0-9][0-9]\))/
           formatted_message << "<li class='entries-of-400s'>#{line}</li>"
-        elsif line =~ /( (50[0-5]) |\(50[0-5]\))/
+        elsif line =~ /( (5[0-9][0-9]) |\(5[0-9][0-9]\))/
           formatted_message << "<li class='entries-of-500s'>#{line}</li>"
         elsif line =~ /FATAL/
           formatted_message << "<li class='entries-of-fatal'>#{line}</li>"

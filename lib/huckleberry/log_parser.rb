@@ -6,7 +6,7 @@ module Huckleberry
     end
 
     def simple_parse_log(log_type: )
-      keyword_config = YAML.load_file(File.join(Huckleberry.root, "/config/log_keywords.yml"))
+      keyword_config = YAML.load_file(File.join(Huckleberry.root, "config", "log_keywords.yml"))
       case log_type
       when keyword_config["production_keywords"]
         production_log_parse
@@ -26,7 +26,7 @@ module Huckleberry
     attr_accessor :message
 
     def production_log_parse
-      File.open(logfile).each_line.each_with_index do |line, index|
+      f = File.open(logfile).each_line.each_with_index do |line, index|
         line.strip!
         next if line == ""
         next if line =~ /Rendered.*(erb|html|builder|template)/
@@ -34,14 +34,14 @@ module Huckleberry
         next if line =~ /Redirected to/
         next if line =~ /Parameters: \{.*\}$/
         next if line =~ /Started (GET|POST|PUT|PATCH|DELETE)/
-        next if line =~ /(SELECT)+.*(AS|FROM)+/
-        next if line =~ /(SET)+.*\=+/
+        next if line =~ /(SELECT).*(AS|FROM)/
+        next if line =~ /(SET).*\=/
         next if line =~ /truncate/
         next if line =~ /BEGIN/
         next if line =~ /COMMIT/
         next if line =~ /INSERT INTO/
-        next if line =~ /(GET)+.*(200|302)+/
-        next if line =~ /(updated_at)+.*(WHERE)+/
+        next if line =~ /(GET).*(200|302)/
+        next if line =~ /(updated_at).*(WHERE)/
         next if line =~ /Processing by.*Controller/
         next if line =~ /Filter chain halted as/
         next if line =~ /Sent data.*(pdf|docx|english|jpg|jpeg|xlsx|xls|csv|png)/i
@@ -56,11 +56,12 @@ module Huckleberry
 
         message << index.to_s + "  -  " + line
       end
+      f.close
       message
     end
 
     def mailer_log_parse
-      File.open(logfile).each_line.each_with_index do |line, index|
+      f = File.open(logfile).each_line.each_with_index do |line, index|
         line.strip!
         next if line == ""
         next if line =~ /\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}/
@@ -78,11 +79,12 @@ module Huckleberry
 
         message << index.to_s + "  -  " + line
       end
+      f.close
       message
     end
 
     def new_relic_log_parse
-      File.open(logfile).each_line.each_with_index do |line, index|
+      f = File.open(logfile).each_line.each_with_index do |line, index|
         line.strip!
         next if line == ""
         next if line =~ /Starting the New Relic agent/
@@ -99,11 +101,12 @@ module Huckleberry
 
         message << index.to_s + "  -  " + line
       end
+      f.close
       message
     end
 
     def process_runner_log_parse
-      File.open(logfile).each_line.each_with_index do |line, index|
+      f = File.open(logfile).each_line.each_with_index do |line, index|
         line.strip!
         next if line == ""
         next if line =~ /Launched process/
@@ -113,11 +116,12 @@ module Huckleberry
 
         message << index.to_s + "  -  " + line
       end
+      f.close
       message
     end
 
     def thin_log_parse
-      File.open(logfile).each_line.each_with_index do |line, index|
+      f = File.open(logfile).each_line.each_with_index do |line, index|
         line.strip!
         next if line == ""
         next if line =~ /Status: 200/
@@ -132,6 +136,7 @@ module Huckleberry
 
         message << index.to_s + "  -  " + line
       end
+      f.close
       message
     end
   end

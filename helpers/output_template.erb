@@ -33,44 +33,54 @@
       }
       .entries-of-404{
         color: brown;
+        display: none;
       }
       .entries-of-400s{
         color: DarkOrange;
+        display: none;
       }
       .entries-of-500s{
         color: blue;
+        display: none;
       }
       .entries-of-fatal{
         color: red;
+        display: none;
       }
       .entries-of-error{
         color: indigo;
+        display: none;
+      }
+      .well{
+        margin: 3px;
       }
     </style>
   </head>
   <body>
     <div class="header">
     <h1 class="header-headline-text">Huckleberry</h1>
-      <button><a style='color: green'>Return to Top</a></button>
-      <button id="button-404" style='color: brown'>Show/Hide 404 Status Code</button>
-      <button id="button-400s" style='color: DarkOrange'>Show/Hide 400-417(excluding 404) Status Code</button>
-      <button id="button-500s" style='color: blue'>Show/Hide 500-505 Status Code</button>
-      <button id="button-fatal" style='color: red'>Show/Hide FATAL</button>
-      <button id="button-error" style='color: indigo'>Show/Hide ERROR</button>
-      <button id="button-non-tracked">Show/Hide Untracked logs</button>
+      <button class="btn"><a href="#return_to_top" style='color: green'>Return to Top</a></button>
+      <button id="button-404" class="btn" style='color: brown'>Show 404s</button>
+      <button id="button-400s" class="btn" style='color: DarkOrange'>Show 400s(excluding 404)</button>
+      <button id="button-500s" class="btn" style='color: blue'>Show 500s</button>
+      <button id="button-fatal" class="btn" style='color: red'>Show FATALs</button>
+      <button id="button-error" class="btn" style='color: indigo'>Show ERRORs</button>
+      <button id="button-non-tracked" class="btn" >Hide Untracked logs</button>
     </div>
-    <div style='margin-top: 100px'>
+    <div class="wrapper" style='margin-top: 100px'>
       <a name="return_to_top" class='anchor'></a>
-      <div class="left">
-        <h4>This logfile is #{original_logfile_name}</h4>
-        <p>This report was made at: #{DateTime.now.to_s}</p>
+      <div class="well">
+        <div class="left">
+          <h4>This logfile is <%= @original_logfile_name %></h4>
+          <p>This report was made at: <%= DateTime.now.to_s %></p>
+        </div>
+        <div class="right">
+          <h4>KEY: [index in log in original file] - [log entry]</h4>
+          <p>EX: 9931 - E, [2015-08-07T14:00:30.029282 #22753] ERROR -- : 400:</p>
+        </div>
+        <hr>
       </div>
-      <div class="right">
-        <h4>KEY: [index in log in original file] - [log entry]</h4>
-        <p>EX: 9931 - E, [2015-08-07T14:00:30.029282 #22753] ERROR -- : 400:</p>
-      </div>
-      <hr>
-      <ul>
+      <div id="log-list">
         <% unless @duplicate_logs.empty? %>
           <h2>Duplicate log entries found:</h2>
           <% @duplicate_logs.each do |log| %>
@@ -81,10 +91,22 @@
           <h2 class="center">No abnormal logs have been found!</h2>
         <% else %>
           <% @raw_message.each do |log| %>
-            <%= log %>
+            <% if log =~ / 404 / %>
+              <p class="well entries-of-404"><%= log %></p>
+            <% elsif log =~ /( (4[0-9][0-9]) |\(4[0-9][0-9]\))/ %>
+              <p class="well entries-of-400s"><%= log %></p>
+            <% elsif log =~ /( (5[0-9][0-9]) |\(5[0-9][0-9]\))/ %>
+              <p class="well entries-of-500s"><%= log %></p>
+            <% elsif log =~ /FATAL/ %>
+              <p class="well entries-of-fatal"><%= log %></p>
+            <% elsif log =~ /ERROR/ %>
+              <p class="well entries-of-error"><%= log %></p>
+            <% else %>
+              <p class="well entries-non-tracked"><%= log %></p>
+            <% end %>
           <% end %>
         <% end %>
-      </ul>
+      </div>
     </div>
   </body>
   <footer>
@@ -93,21 +115,39 @@
     $(function() {
       $("#button-404").click(function() {
         $(".entries-of-404").toggle();
+        $(this).text(function(i, text) {
+          return text === "Show 404s" ? "Hide 404s" : "Show 404s";
+        });
       });
       $("#button-400s").click(function() {
         $(".entries-of-400s").toggle();
+        $(this).text(function(i, text) {
+          return text === "Show 400s(excluding 404)" ? "Hide 400s(excluding 404)" : "Show 400s(excluding 404)";
+        });
       });
       $("#button-500s").click(function() {
         $(".entries-of-500s").toggle();
+        $(this).text(function(i, text) {
+          return text === "Show 500s" ? "Hide 500s" : "Show 500s";
+        });
       });
       $("#button-non-tracked").click(function() {
         $(".entries-non-tracked").toggle();
+        $(this).text(function(i, text) {
+          return text === "Hide Untracked logs" ? "Show Untracked logs" : "Hide Untracked logs";
+        });
       });
       $("#button-fatal").click(function() {
         $(".entries-of-fatal").toggle();
+        $(this).text(function(i, text) {
+          return text === "Show FATALs" ? "Hide FATALs" : "Show FATALs";
+        });
       });
       $("#button-error").click(function() {
         $(".entries-of-error").toggle();
+        $(this).text(function(i, text) {
+          return text === "Show ERRORs" ? "Hide ERRORs" : "Show ERRORs";
+        });
       });
     });
     </script>

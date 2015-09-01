@@ -8,7 +8,7 @@ module Huckleberry
 
     def carry_log_through_process
       if check_for_correct_filetype_send_incorrect_message
-        send_logfile_to_output(message: html_formatted_message)
+        send_logfile_to_output
       end
     end
 
@@ -50,24 +50,23 @@ module Huckleberry
 
     def html_formatted_message
       new_html_object = HtmlFormatter.new(raw_message: sort_parse_and_return_raw_message, duplicate_logs: duplicate_logs, original_logfile_name: filename)
-      new_html_object.html_formatted_message
     end
 
     def duplicate_logs
       LogDuplicateChecker.new(logfile).duplicate_check
     end
 
-    def send_logfile_to_output(message: )
+    def send_logfile_to_output
       case mode
       when "email"
-        LogMailer.send_mail(message: message, html_file: HtmlFormatter.create_html_file(message))
+        LogMailer.send_mail(html_file: html_formatted_message.create_html_file)
         stdout.puts "Hucklebery sent a file to email"
       when "mailcatcher"
         Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
-        LogMailer.send_mail(message: message, html_file: HtmlFormatter.create_html_file(message))
+        LogMailer.send_mail(html_file: html_formatted_message.create_html_file)
         stdout.puts "Hucklebery sent a file to mailcatcher"
       when "launchy"
-        html_file = HtmlFormatter.create_html_file(message)
+        html_file = html_formatted_message.create_html_file
         Launchy.open(html_file.path)
         stdout.puts "Hucklebery opened a window with launchy"
       else

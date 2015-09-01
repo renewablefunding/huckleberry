@@ -1,6 +1,6 @@
 require 'pry'
 require 'mail'
-require 'colorize'
+require 'launchy'
 
 Mail.defaults {delivery_method :sendmail}
 

@@ -2,7 +2,10 @@
 require 'english'
 require_relative '../lib/huckleberry'
 
-case ARGV.first
+mode = ARGV[1] ||= "email"
+logfile_or_output = ARGV[0]
+
+case logfile_or_output
 when nil
   puts Huckleberry::StdoutOutputServer.usage_output
 when "keywords"
@@ -10,5 +13,5 @@ when "keywords"
 when "email"
   puts Huckleberry::StdoutOutputServer.email_settings_output
 else
-  Huckleberry::LogSifter.new(logfile: ARGV.first, mode: ARGV[1] ||= "email", to_email: ARGV[2]).run_script
+  Huckleberry::LogSifter.new(logfile: logfile_or_output, mode: mode).carry_log_through_process
 end

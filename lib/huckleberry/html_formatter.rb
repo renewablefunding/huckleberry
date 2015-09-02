@@ -26,7 +26,7 @@ module Huckleberry
     attr_accessor :formatted_message
 
     def read_and_fill_erb
-      erb = ERB.new(File.read(File.join(Dir.pwd, "helpers", "output_template.erb")))
+      erb = ERB.new(File.read(File.join(Huckleberry.root, "helpers", "output_template.erb")))
       @erb = erb.result(binding)
     end
   end

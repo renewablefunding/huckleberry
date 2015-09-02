@@ -2,7 +2,7 @@ module Huckleberry
   class LogMailer
     class << self
       def send_mail(html_file: )
-        mailer_config = YAML.load_file(File.join(Huckleberry.root ,"/config/email_options.yml"))
+        mailer_config = YAML.load_file(File.join(Dir.pwd ,"config", "huckleberry", "email_options.yml"))
         Mail.deliver do
           from        mailer_config.fetch("from"){ nil }
           to          mailer_config.fetch("recipients"){ nil }
@@ -17,7 +17,7 @@ module Huckleberry
 
       def send_incorrect_log_email
         message_body = StdoutOutputServer.incorrect_logfile_output
-        mailer_config = YAML.load_file(File.join(Huckleberry.root, "/config/email_options.yml"))
+        mailer_config = YAML.load_file(File.join(Dir.pwd ,"config", "huckleberry", "email_options.yml"))
         Mail.deliver do
           from        mailer_config.fetch("from"){ nil }
           to          mailer_config.fetch("recipients"){ nil }

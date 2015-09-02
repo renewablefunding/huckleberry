@@ -6,7 +6,7 @@ module Huckleberry
     end
 
     def simple_parse_log(log_type: )
-      keyword_config = YAML.load_file(File.join(Huckleberry.root, "config", "log_keywords.yml"))
+      keyword_config = YAML.load_file(File.join(Dir.pwd, "config", "huckleberry", "log_keywords.yml"))
       case log_type
       when keyword_config["production_keywords"]
         production_log_parse

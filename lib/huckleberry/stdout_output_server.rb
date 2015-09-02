@@ -76,7 +76,7 @@ huckleberry <relative_path_to_log> email <desired_recipient_email>
              HUCKLEBERRY KEYWORDS
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#{File.read(File.join(Huckleberry.root, "/config/log_keywords.yml"))}
+#{File.read(File.join(Dir.pwd, "config", "huckleberry", "log_keywords.yml"))}
 
 
         OUTPUT
@@ -88,14 +88,10 @@ huckleberry <relative_path_to_log> email <desired_recipient_email>
            HUCKLEBERRY EMAIL SETTINGS
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#{File.read(File.join(Huckleberry.root, "/config/email_options.yml"))}
+#{File.read(File.join(Dir.pwd ,"config", "huckleberry", "email_options.yml"))}
 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-TO SET RECIPIENT EMAIL WITHOUT EDITING YML:
-
-huckleberry <relative_path_to_log> email <desired_recipient_email>
-
 
         OUTPUT
       end

@@ -98,10 +98,9 @@ rake install
 #### Fix List
 
 #### Feature List
-* Create parsing for logs other than panda production. Using prod_log_parse as template.
-
 
 #### Done List
+* ~~Create parsing for logs other than panda production. Using prod_log_parse as template.~~
 * ~~Determine what information is needed from each logfile.~~
 * ~~Log parsing currently return duplicates if there is more than one "Started" before a "Completed" is found~~
 * ~~make `gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'` work~~

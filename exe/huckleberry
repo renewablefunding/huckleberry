@@ -16,8 +16,10 @@ when "email"
 when "generate", "g"
   case mode
   when "default"
+    FileUtils.mkdir_p 'config/huckleberry'
     FileUtils.cp File.join(Huckleberry.root, "helpers", "default_config_template.yml"), File.join(Dir.pwd, "config", "huckleberry", "huckleberry_config.yml")
   when "blank"
+    FileUtils.mkdir_p 'config/huckleberry'
     FileUtils.cp File.join(Huckleberry.root, "helpers", "blank_config_template.yml"), File.join(Dir.pwd, "config", "huckleberry", "huckleberry_config.yml")
   end
 else

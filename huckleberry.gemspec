@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
 
   spec.add_runtime_dependency "mail"
+  spec.add_runtime_dependency "to_regexp"
   spec.add_runtime_dependency "mailcatcher"
   spec.add_runtime_dependency "launchy"
 end

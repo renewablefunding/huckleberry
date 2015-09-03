@@ -1,6 +1,7 @@
 require 'pry'
 require 'mail'
 require 'launchy'
+require 'to_regexp'
 
 Mail.defaults {delivery_method :sendmail}
 

@@ -1,0 +1,25 @@
+# Email config
+# ---------------------------------------------------
+subject: 'Default subject'
+
+subject_log_not_found: 'Subject Line when not found'
+
+from: 'huckleberry@example.com'
+
+recipients: 'foo@example.com'
+
+message_body: "Huckleberry log parser"
+
+
+# Log types.
+# ---------------------------------------------------
+# log_types: {
+#     example: {
+#      keywords: [foo, bar],
+#      parsing_regexp: [
+#                      !ruby/regexp 'foo',
+#                      !ruby/regexp 'foo',
+#                      ]
+#       }
+# }
+# ---------------------------------------------------

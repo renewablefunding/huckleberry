@@ -41,11 +41,12 @@ TO SEE CURRENT EMAIL SETTINGS:
 huckleberry email
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-TO SET RECIPIENT EMAIL:
+TO GENERATE CONFIG FILES:
 
-huckleberry <relative_path_to_log> email <desired_recipient_email>
-
+huckleberry g default
+huckleberry g blank
 - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 
         OUTPUT

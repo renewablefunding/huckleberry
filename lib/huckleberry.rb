@@ -1,4 +1,3 @@
-require 'pry'
 require 'mail'
 require 'launchy'
 require 'to_regexp'

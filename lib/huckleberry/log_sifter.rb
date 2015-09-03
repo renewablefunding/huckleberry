@@ -35,7 +35,7 @@ module Huckleberry
     end
 
     def sort_parse_and_return_raw_message
-      log = LogParser.new(File.open(logfile)).simple_parse_log(log_type: log_type_match)
+      log = LogParser.parse_log(logfile: File.open(logfile), log_type: log_type_match)
     end
 
     def filename_keywords_match_yml_keywords?(keywords)
@@ -75,7 +75,7 @@ module Huckleberry
     end
 
     def send_incorrect_log_type_output
-      stdout.puts StdoutOutputServer.incorrect_logfile_output
+      stdout.puts StdoutOutputServer.no_keywords_detected
       stdout.puts StdoutOutputServer.usage_output
       case mode
       when "email"

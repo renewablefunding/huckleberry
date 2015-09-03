@@ -1,24 +1,37 @@
 # Email config
 # ---------------------------------------------------
-subject: 'Huckleberry | Logfile report'
+# emails can have multiple recipients seperated by commas
 
-subject_log_not_found: 'Huckleberry | Unknown logfile'
+subject: 'Default subject'
+
+subject_log_not_found: 'Subject Line when no keyword is matched'
 
 from: 'huckleberry@example.com'
 
-recipients: 'set recipient emails here seperated by commas'
+recipients: 'Enter Email'
 
 message_body: "Huckleberry log parser"
 
 
 # Log types.
 # ---------------------------------------------------
-# Ex: type: {
-#   keywords: [foo, bar],
-#   parsing_regexp: [
-#                   'foo',
-#                   'foo',
-#                   ]
+# the variables (log_types, keywords, parsing_regexp) are set and need to remain the same throughout
+
+  # keywords should be found in the logfile name
+  # production.log-20159230 has production as a keyword
+
+  # Parsing regexp should identify lines that you wish to exclude from results.
+  # regexps should be entered as a string
+
+
+# log_types: {
+#     example: {                    # This name will be used to group the keywords with the regex
+#       keywords:  [foo, bar],
+#       parsing_regexp: [
+#                      '/regex here/',
+#                      '/\d*/',
+#                      ]
+#       }
 # }
 # ---------------------------------------------------
 log_types: {

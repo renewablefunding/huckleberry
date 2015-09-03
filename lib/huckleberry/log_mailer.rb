@@ -4,8 +4,7 @@ module Huckleberry
       def send_mail(html_file: )
         mailer_config = YAML.load_file(File.join(Dir.pwd ,"config", "huckleberry", "huckleberry_config.yml"))
         unless mailer_config.fetch("recipients").include?("@")
-          puts "No valid emails in the recipients"
-          puts "Edit the huckleberry_config file to fix this"
+          puts StdoutOutputServer.no_email_set
         else
           Mail.deliver do
             from        mailer_config.fetch("from"){ nil }
@@ -18,12 +17,11 @@ module Huckleberry
             add_file html_file.path
           end
           puts "Hucklebery sent a file to email"
-
         end
       end
 
       def send_incorrect_log_email
-        message_body = StdoutOutputServer.incorrect_logfile_output
+        message_body = StdoutOutputServer.no_keywords_detected
         mailer_config = YAML.load_file(File.join(Dir.pwd ,"config", "huckleberry", "huckleberry_config.yml"))
         Mail.deliver do
           from        mailer_config.fetch("from"){ nil }

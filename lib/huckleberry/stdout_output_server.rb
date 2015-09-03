@@ -6,12 +6,14 @@ module Huckleberry
 - - - - - - - - - - - - - - - - - - - - - - - - - -
               HUCKLEBERRY USAGE
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-TO RUN AS EMAIL:
+TO RUN AS EMAIL: use either command
 
 huckleberry <relative_path_to_log>
+huckleberry <relative_path_to_log> email
 
     Will scan the given logfile, and send
     an email with that relevant info.
+    This is the default mode.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 TO RUN IN TEST EMAIL MODE:
@@ -20,8 +22,6 @@ mailcatcher
 huckleberry <relative_path_to_log> mailcatcher
 
   navivate to localhost:1080 to see incoming mail.
-  Mailcatcher does not attach a file, the report
-  only shows in the email body.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 TO RUN AND OPEN WITH LAUNCHY:
@@ -31,28 +31,19 @@ huckleberry <relative_path_to_log> launchy
   A window will pop up with parsed file.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-TO SEE A LIST OF LOGFILE KEYWORDS:
-
-huckleberry keywords
-
-- - - - - - - - - - - - - - - - - - - - - - - - - -
-TO SEE CURRENT EMAIL SETTINGS:
-
-huckleberry email
-
-- - - - - - - - - - - - - - - - - - - - - - - - - -
 TO GENERATE CONFIG FILES:
 
 huckleberry g default
 huckleberry g blank
+
+These will be located in project_root/config/huckleberry
+
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
 
         OUTPUT
       end
 
-      def incorrect_logfile_output
+      def no_keywords_detected
         <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
                HUCKLEBERRY ERROR
@@ -60,37 +51,24 @@ huckleberry g blank
 
   No keywords were found in the logfile name.
 
-  Please update the log_keywords.yml if you would
+  Please update the huckleberry_config.yml if you would
   like this type of file processed in the future!
 
-  To see the list of current keywords run:
-
-    huckleberry keywords
-
+- - - - - - - - - - - - - - - - - - - - - - - - - -
 
         OUTPUT
       end
 
-      def keywords_output
+      def no_email_set
         <<-OUTPUT
 - - - - - - - - - - - - - - - - - - - - - - - - - -
-             HUCKLEBERRY KEYWORDS
+               HUCKLEBERRY ERROR
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#{File.read(File.join(Dir.pwd, "config", "huckleberry", "log_keywords.yml"))}
+  No recipient emails have been set.
 
-
-        OUTPUT
-      end
-
-      def email_settings_output
-        <<-OUTPUT
-- - - - - - - - - - - - - - - - - - - - - - - - - -
-           HUCKLEBERRY EMAIL SETTINGS
-- - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#{File.read(File.join(Dir.pwd ,"config", "huckleberry", "email_options.yml"))}
-
+  Please update the huckleberry_config.yml if you would
+  like this type of file processed in the future!
 
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 

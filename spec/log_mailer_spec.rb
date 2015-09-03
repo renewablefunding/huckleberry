@@ -5,7 +5,7 @@ require_relative '../helpers/spec_helper'
 RSpec.describe Huckleberry::LogMailer do
   include Mail::Matchers
 
-  mailer_config = YAML.load_file(File.join(Dir.pwd ,"config", "huckleberry", "email_options.yml"))
+  mailer_config = YAML.load_file(File.join(Dir.pwd ,"config", "huckleberry", "huckleberry_config.yml"))
 
   describe "#send_mail" do
     context "log type is parseable" do

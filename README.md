@@ -1,6 +1,6 @@
 ### Huckleberry
 
-Now a gem! A script written in ruby to allow parsing of logs.
+A ruby script that parses logfiles using regex. Huckleberry parses logs by having the user define what lines should be excluded and reporting back when non-ignored lines are found.
 
 logs > sawmill > sawyer > tom sawyer > huckleberry
 
@@ -10,36 +10,31 @@ logs > sawmill > sawyer > tom sawyer > huckleberry
 
 Add to Gemfile:
 
-```gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'```
+```
+gem 'huckleberry', :git => 'git@github.com:renewablefunding/huckleberry.git'
+```
 
 Requiring within a project:
 
-```require "huckleberry"```
-
-#### Using within project:
-
-Calling the main method to parse logs:
 ```
-Huckleberry::LogSifter.new(logfile: <relative_path_to_logfile>, mode: <default: "email" | "mailcatcher" | "launchy">).carry_log_through_process
+require "huckleberry"
 ```
-
-ex:`Huckleberry::LogSifter.new(logfile: logfile_location, mode: "launchy").carry_log_through_process`
-
----
 
 #### Using as a command line utility
 
 Run `huckleberry` to be informed of the options, or view below:
 
 ---
-**TO RUN AS EMAIL:**
+**TO RUN AS EMAIL:** use either command
 
 ```
 huckleberry <relative_path_to_log>
+huckleberry <relative_path_to_log> email
 ```
 
 Will scan the given logfile, and send
 an email with that relevant info.
+This is the default mode.
 
 **TO RUN IN TEST EMAIL MODE:**
 
@@ -59,57 +54,57 @@ huckleberry <relative_path_to_log> launchy
 
   A window will pop up with parsed file.
 
-
-**TO SEE A LIST OF LOGFILE KEYWORDS**
-
-```
-huckleberry keywords
-```
-
-**TO SEE EMAIL SETTINGS**
+---
+**TO GENERATE CONFIG FILES:**
 
 ```
-huckleberry email
+huckleberry g default
+huckleberry g blank
 ```
 
-**TO SET RECIPIENT EMAIL**
+These will be located in project_root/config/huckleberry
+
+---
+
+#### Using within project:
+
+Calling the main method to parse logs:
+```
+Huckleberry::LogSifter.new(logfile: <relative_path_to_logfile>, mode: <default: "email" | "mailcatcher" | "launchy">).carry_log_through_process
+```
+
+Example:
 
 ```
-huckleberry <relative_path_to_log> email <desired_recipient_email>
+logfile_location = 'foo/bar/production.log-20159230'
+Huckleberry::LogSifter.new(logfile: logfile_location, mode: "launchy").carry_log_through_process
 ```
 
 ---
 
 #### How to install huckleberry locally for development
 ```
-git clone https://github.com/projectdx/huckleberry.git
+git clone https://github.com/renewablefunding/huckleberry.git
 cd huckleberry
 rake install
 ```
 ---
 
+#### Contributors
+* Adam McFadden
+
 #### Contributing to Huckleberry
-* Check out the fix and feature list for current items that need attention.
-* submit an issue with fix/feature requests.
-* clone repo, make a branch, and pull request your fix/feature
+* Check out the issues and feature list(below) for current items that need attention.
+* Fork this repo. implement the fix/feature and then submit a pull request.
+  * *Add yourself to the contributors on the README!*
+* submit an issue for bugs and/or feature requests.
 
 ---
 
-#### Fix List
-
 #### Feature List
-
-#### Done List
-* ~~Create parsing for logs other than panda production. Using prod_log_parse as template.~~
-* ~~Determine what information is needed from each logfile.~~
-* ~~Log parsing currently return duplicates if there is more than one "Started" before a "Completed" is found~~
-* ~~make `gem 'huckleberry', :git => 'git@github.com:projectdx/huckleberry.git'` work~~
-* ~~allow for `require "huckleberry"` rather than `require_relative`~~
-* ~~use yml files to allow for setups~~
-* ~~QA problem - two calls going at exact same time and creates a sql error because it is trying to create the same exact entry twice. Should be looking for two identical calls followed by an error.~~
-* ~~refactor to take out unnecessary files~~
-* ~~create an executable~~
-* ~~log sifter will send the file to the correct log parsing class~~
-* ~~log parsing classes will return to a class that handles output of information to email or console~~
-* ~~yml config file can be used to provide keywords for file naming~~
-* ~~create this as a gem (maybe)~~
+* refine regex
+* attach multiple files to email. Run huckleberry on multiple logs and send only one email.
+* be able to set urgency for what is sent in email.
+* add thor in for generators. allowing the use to set email and other options during generation.
+* find a way to get stack traces. Pull out stack traces associated with erros.
+* authenticate from email to keep it from hitting spam.

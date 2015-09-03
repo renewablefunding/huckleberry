@@ -4,6 +4,8 @@ module Huckleberry
       @logfile = logfile
       @mode = mode
       @stdout = stdout
+      @log_types_hash = {}
+      @log_type_match = {}
     end
 
     def carry_log_through_process
@@ -13,27 +15,27 @@ module Huckleberry
     end
 
     private
-    attr_reader :logfile, :mode, :stdout
+    attr_reader :logfile, :mode, :stdout, :log_types_hash, :log_type_match
 
     def check_for_correct_filetype_send_incorrect_message
-      keyword_config = YAML.load_file(File.join(Dir.pwd, "config", "huckleberry", "log_keywords.yml"))
-      keys = keyword_config.keys
-      matched_keys = keys.select { |key| filename_keywords_match_yml_keywords?(keyword_config[key]) }
-      if matched_keys.empty?
+      huckleberry_config = YAML.load_file(File.join(Dir.pwd, "config", "huckleberry", "huckleberry_config.yml"))
+      @log_types_hash = huckleberry_config.fetch('log_types')
+
+      log_types_hash.each do |key, value|
+        if filename_keywords_match_yml_keywords?(value.fetch("keywords"))
+          @log_type_match[key] = value
+        end
+      end
+
+      if @log_type_match.empty?
         send_incorrect_log_type_output
-        false
       else
         true
       end
     end
 
     def sort_parse_and_return_raw_message
-      log = false
-      keyword_config = YAML.load_file(File.join(Dir.pwd, "config", "huckleberry", "log_keywords.yml"))
-      keyword_config.each_key do |key|
-        log = LogParser.new(File.open(logfile)).simple_parse_log(log_type: keyword_config[key]) if filename_keywords_match_yml_keywords?(keyword_config[key])
-      end
-      return log
+      log = LogParser.parse_log(logfile: File.open(logfile), log_type: log_type_match)
     end
 
     def filename_keywords_match_yml_keywords?(keywords)
@@ -60,11 +62,9 @@ module Huckleberry
       case mode
       when "email"
         LogMailer.send_mail(html_file: html_formatted_message.create_html_file)
-        stdout.puts "Hucklebery sent a file to email"
       when "mailcatcher"
         Mail.defaults {delivery_method :smtp, address: "localhost", port: 1025}
         LogMailer.send_mail(html_file: html_formatted_message.create_html_file)
-        stdout.puts "Hucklebery sent a file to mailcatcher"
       when "launchy"
         html_file = html_formatted_message.create_html_file
         Launchy.open(html_file.path)
@@ -75,7 +75,7 @@ module Huckleberry
     end
 
     def send_incorrect_log_type_output
-      stdout.puts StdoutOutputServer.incorrect_logfile_output
+      stdout.puts StdoutOutputServer.no_keywords_detected
       stdout.puts StdoutOutputServer.usage_output
       case mode
       when "email"

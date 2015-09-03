@@ -7,7 +7,7 @@ module Huckleberry
           line.strip!
           next if line == ""
           begin
-            log_type.fetch(log_type.first.first).fetch('parsing_regexp').each do |regexp|
+            log_type.values.first['parsing_regexp'].each do |regexp|
               raise if line =~ regexp.to_regexp
             end
           rescue

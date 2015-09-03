@@ -24,103 +24,98 @@ message_body: "Huckleberry log parser"
   # regexps should be entered as a string
 
 
-# log_types: {
-#     example: {                    # This name will be used to group the keywords with the regex
-#       keywords:  [foo, bar],
-#       parsing_regexp: [
-#                      '/regex here/',
-#                      '/\d*/',
-#                      ]
-#       }
-# }
+# log_types:
+#   example:                    # This name will be used to group the keywords with the regex
+#     keywords:  [foo, bar],
+#     parsing_regexp: [
+          #  '/regex here/',
+          #  '/\d*/',
+          #  ]
 # ---------------------------------------------------
-log_types: {
-  production: {
-              keywords: [production],
-              parsing_regexp: [
-                  '/Rendered.*(erb|html|builder|template)/',
-                  '/Completed (200|302|204)/',
-                  '/Redirected to/',
-                  '/Parameters: \{.*\}$/',
-                  '/Started (GET|POST|PUT|PATCH|DELETE)/',
-                  '/(SELECT).*(AS|FROM)/',
-                  '/(SET).*\=/',
-                  '/truncate/',
-                  '/BEGIN/',
-                  '/COMMIT/',
-                  '/INSERT INTO/',
-                  '/(GET).*(200|302)/',
-                  '/(updated_at).*(WHERE)/',
-                  '/Processing by.*Controller/',
-                  '/Filter chain halted as/',
-                  '/Sent data.*(pdf|docx|english|jpg|jpeg|xlsx|xls|csv|png)/i',
-                  '/(POST|PUT|GET|DELETE): http/',
-                  '/\{(:headers).*}/',
-                  '/Requested param.*\]/',
-                  '/LDAP.*\[.*\]/',
-                  '/LDAP.*connect/',
-                  '/sequel_reconnector/',
-                  '/AWS (S3|STS) (200|204)/',
-                  '/\[AIRBRAKE\] Success/i'
-                ]
-              },
+# {log_types: {prod: {keywords: []}, {parsing_regexp: []}}}
 
-  new_relic_keywords: {
-              keywords: [newrelic],
-              parsing_regexp: [
-                  '/Starting the New Relic agent/',
-                  '/To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false/',
-                  '/Reading configuration from config\/",newrelic.yml/',
-                  '/Environment: \w*$/',
-                  '/Application: \w*$/',
-                  '/No known dispatcher detected./',
-                  '/(Installing|Finished).*instrumentation$/',
-                  '/Reporting to: http/',
-                  '/Starting Agent shutdown/',
-                  '/Dispatcher: thin/',
-                  '/Doing deferred dependency-detection before Rack startup/'
-                ]
-              },
 
-  mailer_keywords: {
-              keywords: [mailer],
-              parsing_regexp: [
-                  '/\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}/',
-                  '/Date: .*\+\d{4}/',
-                  '/(From:|To:) .*@/',
-                  '/Subject: .*/',
-                  '/Mime-Version:/',
-                  '/Content-Type:/',
-                  '/charset\=/',
-                  '/Message-ID: \<.*\>/',
-                  '/Content-Transfer-Encoding:/',
-                  '/View the application here/',
-                  '/.*==_mimepart_.*/',
-                  '/\(.*resend_email\)/'
-                ]
-              },
+log_types:
+  production:
+    keywords: [production]
+    parsing_regexp: [
+        '/Rendered.*(erb|html|builder|template)/',
+        '/Completed (200|302|204)/',
+        '/Redirected to/',
+        '/Parameters: \{.*\}$/',
+        '/Started (GET|POST|PUT|PATCH|DELETE)/',
+        '/(SELECT).*(AS|FROM)/',
+        '/(SET).*\=/',
+        '/truncate/',
+        '/BEGIN/',
+        '/COMMIT/',
+        '/INSERT INTO/',
+        '/(GET).*(200|302)/',
+        '/(updated_at).*(WHERE)/',
+        '/Processing by.*Controller/',
+        '/Filter chain halted as/',
+        '/Sent data.*(pdf|docx|english|jpg|jpeg|xlsx|xls|csv|png)/i',
+        '/(POST|PUT|GET|DELETE): http/',
+        '/\{(:headers).*}/',
+        '/Requested param.*\]/',
+        '/LDAP.*\[.*\]/',
+        '/LDAP.*connect/',
+        '/sequel_reconnector/',
+        '/AWS (S3|STS) (200|204)/',
+        '/\[AIRBRAKE\] Success/i'
+      ]
 
-  process_runner_keywords: {
-              keywords: [process, runner],
-              parsing_regexp: [
-                  '/Launched process/',
-                  '/Completing task.*no params needed/',
-                  '/\* complete!/'
-                ]
-              },
+  new_relic_keywords:
+    keywords: [newrelic]
+    parsing_regexp: [
+        '/Starting the New Relic agent/',
+        '/To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false/',
+        '/Reading configuration from config\/",newrelic.yml/',
+        '/Environment: \w*$/',
+        '/Application: \w*$/',
+        '/No known dispatcher detected./',
+        '/(Installing|Finished).*instrumentation$/',
+        '/Reporting to: http/',
+        '/Starting Agent shutdown/',
+        '/Dispatcher: thin/',
+        '/Doing deferred dependency-detection before Rack startup/'
+      ]
 
-  thin_keywords: {
-              keywords: [thin],
-              parsing_regexp: [
-                  '/Status: 200/',
-                  '/Api-(Token|Version):/',
-                  '/Content-Type:/i',
-                  '/transfer-encoding:/',
-                  '/connection:/',
-                  '/x-newrelic-app-data:/',
-                  '/DEBUG -- (request:|response:)/',
-                  '/INFO -- : post http/',
-                  '/date:.*\/'
-                ]
-              }
-}
+  mailer_keywords:
+    keywords: [mailer]
+    parsing_regexp: [
+        '/\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}/',
+        '/Date: .*\+\d{4}/',
+        '/(From:|To:) .*@/',
+        '/Subject: .*/',
+        '/Mime-Version:/',
+        '/Content-Type:/',
+        '/charset\=/',
+        '/Message-ID: \<.*\>/',
+        '/Content-Transfer-Encoding:/',
+        '/View the application here/',
+        '/.*==_mimepart_.*/',
+        '/\(.*resend_email\)/'
+      ]
+
+  process_runner_keywords:
+    keywords: [process, runner]
+    parsing_regexp: [
+        '/Launched process/',
+        '/Completing task.*no params needed/',
+        '/\* complete!/'
+      ]
+
+  thin_keywords:
+    keywords: [thin]
+    parsing_regexp: [
+        '/Status: 200/',
+        '/Api-(Token|Version):/',
+        '/Content-Type:/i',
+        '/transfer-encoding:/',
+        '/connection:/',
+        '/x-newrelic-app-data:/',
+        '/DEBUG -- (request:|response:)/',
+        '/INFO -- : post http/',
+        '/date:.*\/'
+      ]

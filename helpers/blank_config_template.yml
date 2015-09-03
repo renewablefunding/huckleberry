@@ -13,8 +13,7 @@ recipients: 'Enter Email'
 message_body: "Huckleberry log parser"
 
 
-
-# Log types
+# Log types.
 # ---------------------------------------------------
 # the variables (log_types, keywords, parsing_regexp) are set and need to remain the same throughout
 
@@ -24,13 +23,12 @@ message_body: "Huckleberry log parser"
   # Parsing regexp should identify lines that you wish to exclude from results.
   # regexps should be entered as a string
 
-# log_types: {
-#     example: {                    # This name will be used to group the keywords with the regex
-#       keywords:  [foo, bar],
-#       parsing_regexp: [
-#                      '/regex here/',
-#                      '/\d*/',
-#                      ]
-#       }
-# }
+
+# log_types:
+#   example:                    # This name will be used to group the keywords with the regex
+#     keywords:  [foo, bar]
+#     parsing_regexp: [
+          #  '/regex here/',
+          #  '/\d*/',
+          #  ]
 # ---------------------------------------------------

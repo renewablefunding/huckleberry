@@ -45,11 +45,9 @@
       }
       .entries-of-fatal{
         color: red;
-        display: none;
       }
       .entries-of-error{
         color: indigo;
-        display: none;
       }
       .well{
         margin: 3px;
@@ -97,9 +95,9 @@
               <p class="well entries-of-400s"><%= log %></p>
             <% elsif log =~ /( (5[0-9][0-9]) |\(5[0-9][0-9]\))/ %>
               <p class="well entries-of-500s"><%= log %></p>
-            <% elsif log =~ /FATAL/ %>
+            <% elsif log =~ /FATAL/i %>
               <p class="well entries-of-fatal"><%= log %></p>
-            <% elsif log =~ /ERROR/ %>
+            <% elsif log =~ /ERROR/i %>
               <p class="well entries-of-error"><%= log %></p>
             <% else %>
               <p class="well entries-non-tracked"><%= log %></p>

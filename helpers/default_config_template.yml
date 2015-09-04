@@ -34,35 +34,31 @@ message_body: "Huckleberry log parser"
 # ---------------------------------------------------
 # {log_types: {prod: {keywords: []}, {parsing_regexp: []}}}
 
-
 log_types:
   production:
     keywords: [production]
     parsing_regexp: [
-        '/Rendered.*(erb|html|builder|template)/',
-        '/Completed (200|302|204)/',
-        '/Redirected to/',
-        '/Parameters: \{.*\}$/',
-        '/Started (GET|POST|PUT|PATCH|DELETE)/',
-        '/(SELECT).*(AS|FROM)/',
-        '/(SET).*\=/',
-        '/truncate/',
-        '/BEGIN/',
-        '/COMMIT/',
-        '/INSERT INTO/',
-        '/(GET).*(200|302)/',
-        '/(updated_at).*(WHERE)/',
-        '/Processing by.*Controller/',
-        '/Filter chain halted as/',
-        '/Sent data.*(pdf|docx|english|jpg|jpeg|xlsx|xls|csv|png)/i',
-        '/(POST|PUT|GET|DELETE): http/',
-        '/\{(:headers).*}/',
-        '/Requested param.*\]/',
-        '/LDAP.*\[.*\]/',
-        '/LDAP.*connect/',
-        '/sequel_reconnector/',
+        '/INFO -- :\s*Redirected to/',
+        '/INFO -- :\s*Rendered.*(erb|html|builder|template)/',
+        '/INFO -- :\s*Completed (200|302|204)/',
+        '/INFO -- :\s*Parameters: \{.*\}$/',
+        '/INFO -- :\s*Started (GET|POST|PUT|PATCH|DELETE)/',
+        '/\A(\):)$/',
+        '/app/(views|decorators|lib|controllers)/.*(erb|rb):\d*:/',
+        '/(\d+:\s*\<.*\>)$/',
+        '/(\d+:{1})$/',
+        '/INFO -- :\s*Processing by.*Controller/',
+        '/INFO -- :\s*Filter chain halted as/',
+        '/INFO -- :\s*Sent data.*(pdf|docx|english|jpg|jpeg|xlsx|xls|csv|png|\dms)/i',
+        '/INFO -- :\s*(POST|PUT|GET|DELETE): http/',
+        '/\{(:headers){1}.*(application\/json).*\}/',
+        '/INFO -- :\s*Requested param.*\]/',
+        '/INFO -- :\s*LDAP.*\[.*\]/',
+        '/INFO -- :\s*Attempting LDAP connect/',
+        '/\Alib\/sequel_reconnector/',
         '/AWS (S3|STS) (200|204)/',
-        '/\[AIRBRAKE\] Success/i'
+        '/\[AIRBRAKE\] Success/i',
+        '/(\s*\^\s*)$/'
       ]
 
   new_relic_keywords:

@@ -61,8 +61,8 @@
       <button id="button-404" class="btn" style='color: brown'>Show 404s</button>
       <button id="button-400s" class="btn" style='color: DarkOrange'>Show 400s(excluding 404)</button>
       <button id="button-500s" class="btn" style='color: blue'>Show 500s</button>
-      <button id="button-fatal" class="btn" style='color: red'>Show FATALs</button>
-      <button id="button-error" class="btn" style='color: indigo'>Show ERRORs</button>
+      <button id="button-fatal" class="btn" style='color: red'>Hide FATALs</button>
+      <button id="button-error" class="btn" style='color: indigo'>Hide ERRORs</button>
       <button id="button-non-tracked" class="btn" >Hide Untracked logs</button>
     </div>
     <div class="wrapper" style='margin-top: 100px'>
@@ -138,13 +138,13 @@
       $("#button-fatal").click(function() {
         $(".entries-of-fatal").toggle();
         $(this).text(function(i, text) {
-          return text === "Show FATALs" ? "Hide FATALs" : "Show FATALs";
+          return text === "Hide FATALs" ? "Show FATALs" : "Hide FATALs";
         });
       });
       $("#button-error").click(function() {
         $(".entries-of-error").toggle();
         $(this).text(function(i, text) {
-          return text === "Show ERRORs" ? "Hide ERRORs" : "Show ERRORs";
+          return text === "Hide ERRORs" ? "Show ERRORs" : "Hide ERRORs";
         });
       });
     });

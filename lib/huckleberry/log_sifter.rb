@@ -59,6 +59,7 @@ module Huckleberry
     end
 
     def send_logfile_to_output
+      system('rm parsed_logs/*.html')
       case mode
       when "email"
         LogMailer.send_mail(html_file: html_formatted_message.create_html_file)

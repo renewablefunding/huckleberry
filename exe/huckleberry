@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'english'
+require 'English'
 require 'fileutils'
 require_relative '../lib/huckleberry'
 
